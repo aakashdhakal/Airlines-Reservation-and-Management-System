@@ -1,3 +1,3 @@
-public class Admin extends Plane {
+public class Admin extends User {
 
 }

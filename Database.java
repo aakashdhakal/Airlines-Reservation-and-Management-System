@@ -9,10 +9,18 @@ public class Database {
     // link database password
     private static String PASSWORD = "";
 
-    public void connect() throws Exception {
+    public ResultSet select(String query) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        System.out.println("Connected to database " + connection.getCatalog());
+        Statement statement = connection.createStatement();
+        return statement.executeQuery(query);
+    }
+
+    public void modify(String query) throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(query);
     }
 
 }

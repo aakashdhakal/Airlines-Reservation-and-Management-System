@@ -6,6 +6,20 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "test",
+			"request": "launch",
+			"mainClass": "test",
+			"projectName": "Airplane-Reservation-System_8bd041db"
+		},
+		{
+			"type": "java",
+			"name": "Database",
+			"request": "launch",
+			"mainClass": "Database",
+			"projectName": "Airplane-Reservation-System_8bd041db"
+		},
+		{
+			"type": "java",
 			"name": "Run/Debug JAVA",
 			"request": "launch",
 			"mainClass": "${file}"
