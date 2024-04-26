@@ -11,6 +11,8 @@ public class User {
     private String origin;
     private String destination;
 
+    private Database database = new Database();
+
     public void vline(int n, char ch) {
         for (int i = 0; i < n; i++) {
             System.out.print(ch);
@@ -38,7 +40,6 @@ public class User {
         // check if there are any flights available
         // if there are, display them
         // if there are not, display a message saying there are no flights available
-        Database database = new Database();
         ResultSet planes = database.databaseGet(
                 "SELECT * FROM planes WHERE origin = '" + origin + "' AND destination = '" + destination + "'");
 
@@ -50,6 +51,15 @@ public class User {
         }
     }
 
+    private boolean checkFlight(int flightId) throws Exception {
+        ResultSet planes = database.databaseGet("SELECT * FROM planes WHERE id = " + flightId);
+        if (planes.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void reserveSeat() throws Exception {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the destination: ");
@@ -57,8 +67,15 @@ public class User {
         System.out.print("Enter the origin: ");
         origin = scanner.nextLine();
         checkFlights();
-        
+        System.out.println("Enter the flight id you want to reserve: ");
+        int flightId = scanner.nextInt();
         scanner.close();
+        if (checkFlight(flightId)) {
+            // SELECT NO OF SEATS
+
+        } else {
+            System.out.println("Sorry ! Flight does not exist.");
+        }
 
     }
 
