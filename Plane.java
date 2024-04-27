@@ -50,4 +50,17 @@ public class Plane {
         }
     }
 
+    public boolean checkSeatCapacity(int flightId, int numberOfSeats) throws Exception {
+        ResultSet planes = database
+                .databaseGet("SELECT * FROM planes INNER JOIN reservations WHERE plane_id = " + flightId + ";");
+        if (planes.next()) {
+            int reserved = planes.getRow();
+            int capacity = planes.getInt("capacity");
+            int availableSeats = capacity - reserved;
+            if (availableSeats >= numberOfSeats) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

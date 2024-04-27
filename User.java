@@ -7,7 +7,6 @@ public class User {
     public String password;
     public String role;
     public int numberOfSeats;
-    public int flightId = 0;
 
     private int userId = 1000;
     private ResultSet planes;
@@ -22,14 +21,15 @@ public class User {
         flight.destination = scanner.nextLine();
         System.out.print("Enter the origin: ");
         flight.origin = scanner.nextLine();
-        planes = flight.checkFlights(flightId, flight.origin, flight.destination);
+        planes = flight.checkFlights(flight.flightId, flight.origin, flight.destination);
+
         if (planes != null) {
             flight.showPlaneDetails(planes);
 
             System.out.print("Select the flight you want to reserve : ");
-            flightId = scanner.nextInt();
+            flight.flightId = scanner.nextInt();
 
-            if (flight.checkFlights(flightId, flight.origin, flight.destination) != null) {
+            if (flight.checkFlights(flight.flightId, flight.origin, flight.destination) != null) {
                 // SELECT NO OF SEATS
                 System.out.print("Enter the number of seats you want to reserve: ");
                 numberOfSeats = scanner.nextInt();
@@ -40,9 +40,13 @@ public class User {
                         "insert into reservations (ticket_id ,user_id, plane_id, number_of_seats) values ("
                                 + reservationId + ","
                                 + userId + ","
-                                + flightId + ", "
+                                + flight.flightId + ", "
                                 + numberOfSeats + ");");
-                System.out.println("Reservation successful !");
+                if (flight.checkSeatCapacity(flight.flightId, numberOfSeats)) {
+                    System.out.println("Reservation successful. Your reservation id is " + reservationId);
+                } else {
+                    System.out.println("Sorry ! The requested number of seats are not available.");
+                }
             } else {
                 System.out.println("Sorry ! Flight does not exist.");
             }
