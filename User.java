@@ -3,12 +3,12 @@ import java.sql.*;
 
 public class User {
 
-    public String username;
+    public static String username;
     public String password;
     public String role;
     public int numberOfSeats;
 
-    private int userId = 1;
+    private static int userId = 1;
     private ResultSet planes;
 
     private Database database = new Database();
@@ -56,11 +56,6 @@ public class User {
         }
     }
 
-    public void showReservations(ResultSet reservations) throws Exception {
-        // show plane ticket
-
-    }
-
     public void showTickets(ResultSet reservation) throws Exception {
         while (reservation.next()) {
             flight.vline(120, '-');
@@ -75,6 +70,17 @@ public class User {
                     reservation.getInt("fare") * reservation.getInt("number_of_seats"));
             flight.vline(120, '-');
         }
+    }
+
+    public boolean authenticateUser(String username, String password, String role) throws Exception {
+        ResultSet user = database.databaseGet("SELECT * FROM users WHERE username = '" + username + "' AND password = '"
+                + password + "' AND role = '" + role + "';");
+        if (user.next()) {
+            userId = user.getInt("id");
+            return true;
+        }
+        return false;
+
     }
 
     public void main(String[] args) throws Exception {
