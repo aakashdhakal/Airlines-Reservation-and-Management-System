@@ -16,7 +16,7 @@ public class Database {
         return statement.executeQuery(query);
     }
 
-    public void databaseSet(String query) throws Exception {
+    public void databaseUpdate(String query) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         Statement statement = connection.createStatement();
