@@ -4,7 +4,13 @@ public class Plane {
     public int flightId;
     public String origin;
     public String destination;
+
     public int capacity;
+    public String departureDate;
+    public String departureTime;
+    public int fare;
+
+    private Database database = new Database();
 
     public void vline(int n, char ch) {
         for (int i = 0; i < n; i++) {
@@ -28,4 +34,20 @@ public class Plane {
             vline(120, '-');
         } while (planes.next());
     }
+
+    // check if the flight exists for the given origin and destination
+    public ResultSet checkFlights(int flightId, String origin, String destination) throws Exception {
+
+        String query = "SELECT * FROM planes WHERE origin = '" + origin + "' AND destination = '" + destination + "'";
+        if (flightId != 0) {
+            query += " AND id = " + flightId;
+        }
+        ResultSet planes = database.databaseGet(query + ";");
+        if (planes.next()) {
+            return planes;
+        } else {
+            return null;
+        }
+    }
+
 }
