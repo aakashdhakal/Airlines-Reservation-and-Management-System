@@ -6,23 +6,6 @@ public class Passenger extends User {
     Plane flight = new Plane();
     Database database = new Database();
 
-    private void showPassengerMenu() {
-        System.out.println("""
-
-
-                \t\t\t         ███████ ██   ██ ██    ██ ██████   █████  ███████ ███████
-                \t\t\t         ██      ██  ██   ██  ██  ██   ██ ██   ██ ██      ██
-                \t\t\t         ███████ █████     ████   ██████  ███████ ███████ ███████
-                \t\t\t              ██ ██  ██     ██    ██      ██   ██      ██      ██
-                \t\t\t         ███████ ██   ██    ██    ██      ██   ██ ███████ ███████
-
-
-                \t\t          !============== An online flight reservation system ===============!
-
-                        """);
-        flight.vline(120, '-');
-    }
-
     private void passengerLogin() throws Exception {
         Console console = System.console();
         if (console == null) {
@@ -47,7 +30,7 @@ public class Passenger extends User {
 
     public void main(String[] args) throws Exception {
         Passenger passenger = new Passenger();
-        passenger.showPassengerMenu();
+        // passenger.showPassengerMenu();
         passenger.passengerLogin();
 
     }
