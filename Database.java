@@ -13,7 +13,12 @@ public class Database {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         Statement statement = connection.createStatement();
-        return statement.executeQuery(query);
+        if (query.contains("SELECT")) {
+            return statement.executeQuery(query);
+        } else {
+            statement.executeUpdate(query);
+            return null;
+        }
     }
 
     public void databaseUpdate(String query) throws Exception {

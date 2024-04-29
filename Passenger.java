@@ -6,7 +6,7 @@ public class Passenger extends User {
     Plane flight = new Plane();
     Database database = new Database();
 
-    private void passengerLogin() throws Exception {
+    public void passengerLogin() throws Exception {
         Console console = System.console();
         if (console == null) {
             throw new Exception("Couldn't get Console instance");
@@ -26,13 +26,6 @@ public class Passenger extends User {
         } else {
             System.out.println("Login failed");
         }
-    }
-
-    public void main(String[] args) throws Exception {
-        Passenger passenger = new Passenger();
-        // passenger.showPassengerMenu();
-        passenger.passengerLogin();
-
     }
 
 }

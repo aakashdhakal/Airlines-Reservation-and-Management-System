@@ -1,6 +1,6 @@
 import java.sql.ResultSet;
 
-public class Plane {
+public class Plane extends Start {
     public int flightId;
     public String origin;
     public String destination;

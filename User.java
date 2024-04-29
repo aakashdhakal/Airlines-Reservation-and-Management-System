@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.sql.*;
 
-public class User {
+public class User extends Start {
 
     public static String username;
     public String password;
@@ -58,7 +58,7 @@ public class User {
 
     public void showTickets(ResultSet reservation) throws Exception {
         while (reservation.next()) {
-            flight.vline(120, '-');
+            vline(120, '-');
             System.out.printf("%-20s %s\n", "Ticket Id:", reservation.getString("ticket_id"));
             System.out.printf("%-20s %s\n", "Plane Id:", reservation.getString("plane_id"));
             System.out.printf("%-20s %s\n", "Number of Seats:", reservation.getString("number_of_seats"));
@@ -68,7 +68,7 @@ public class User {
             System.out.printf("%-20s %s\n", "Departure Time:", reservation.getString("departure_time"));
             System.out.printf("%-20s Rs %d\n", "Total Cost:",
                     reservation.getInt("fare") * reservation.getInt("number_of_seats"));
-            flight.vline(120, '-');
+            vline(120, '-');
         }
     }
 
@@ -81,16 +81,6 @@ public class User {
         }
         return false;
 
-    }
-
-    public void main(String[] args) throws Exception {
-        User user = new User();
-        // user.reserveSeat();
-        ResultSet reservations = user.database
-                .databaseGet(
-                        "SELECT * FROM reservations INNER JOIN planes ON reservations.plane_id = planes.id INNER JOIN users ON reservations.user_id = users.id WHERE user_id = "
-                                + userId + ";");
-        user.showTickets(reservations);
     }
 
 }
