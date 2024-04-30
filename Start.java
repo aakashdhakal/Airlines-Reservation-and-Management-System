@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Start {
 
-    public static String displayMessage;
+    public static String displayMessage = "";
 
     public void vline(int n, char ch) {
         for (int i = 0; i < n; i++) {
@@ -11,7 +11,9 @@ public class Start {
         System.out.println("");
     }
 
-    private void showAppTitle() {
+    public void showAppTitle() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         System.out.println("""
 
 
@@ -27,7 +29,21 @@ public class Start {
                         """);
     }
 
+    public void showDisplayMessage() {
+        if (displayMessage.equals(""))
+            return;
+        vline(120, '=');
+        System.out.println("\t\t\t" + displayMessage);
+        vline(120, '=');
+        displayMessage = "";
+    }
+
+    public static void setDisplayMessage(String message) {
+        displayMessage = message;
+    }
+
     public void showStartMenu() {
+        showDisplayMessage();
         System.out.println("""
                 \t\t\t +--------------------------------------------------------------------+
                 \t\t\t |                                                                    |
@@ -46,19 +62,18 @@ public class Start {
     public static void main(String[] args) throws Exception {
         Start start = new Start();
         int choice;
-
         Scanner scanner = new Scanner(System.in);
+
         do {
             // clear the screen
-            System.out.print("\033[H\033[2J");
             start.showAppTitle();
             start.showStartMenu();
             System.out.print("\t\t\tEnter your choice: ");
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    // Admin admin = new Admin();
-                    // admin.adminLogin();
+                    Admin admin = new Admin();
+                    admin.adminLogin();
                     break;
                 case 2:
                     Passenger passenger = new Passenger();
@@ -74,8 +89,10 @@ public class Start {
                 default:
                     System.out.println("Invalid choice");
             }
+
         } while (choice != 4);
         scanner.close();
+
     }
 
 }

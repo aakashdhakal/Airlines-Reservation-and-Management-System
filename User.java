@@ -7,8 +7,8 @@ public class User extends Start {
     public String password;
     public String role;
     public int numberOfSeats;
+    public static int userId;
 
-    private static int userId = 1;
     private ResultSet planes;
 
     private Database database = new Database();
@@ -81,6 +81,14 @@ public class User extends Start {
         }
         return false;
 
+    }
+
+    public int getUserId(String username) throws Exception {
+        ResultSet user = database.databaseGet("SELECT * FROM users WHERE username = '" + username + "';");
+        if (user.next()) {
+            return user.getInt("id");
+        }
+        return 0;
     }
 
 }
