@@ -80,7 +80,14 @@ public class User extends Start {
             return true;
         }
         return false;
+    }
 
+    public boolean checkUsername(String username) throws Exception {
+        ResultSet user = database.databaseGet("SELECT * FROM users WHERE username = '" + username + "';");
+        if (user.next()) {
+            return true;
+        }
+        return false;
     }
 
     public int getUserId(String username) throws Exception {
