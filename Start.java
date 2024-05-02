@@ -4,6 +4,20 @@ public class Start {
 
     public static String displayMessage = "";
 
+    public static void printCentered(String text) {
+        System.out.printf("%" + ((text.length() + 120) / 2) + "s\n", text);
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public void vline(int n, char ch) {
         for (int i = 0; i < n; i++) {
             System.out.print(ch);
@@ -12,29 +26,26 @@ public class Start {
     }
 
     public void showAppTitle() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        clearScreen();
         System.out.println("""
 
+                \t\t\t       ███████ ██   ██ ██    ██ ██████   █████  ███████ ███████
+                \t\t\t       ██      ██  ██   ██  ██  ██   ██ ██   ██ ██      ██
+                \t\t\t       ███████ █████     ████   ██████  ███████ ███████ ███████
+                \t\t\t            ██ ██  ██     ██    ██      ██   ██      ██      ██
+                \t\t\t       ███████ ██   ██    ██    ██      ██   ██ ███████ ███████
 
-                \t\t\t         ███████ ██   ██ ██    ██ ██████   █████  ███████ ███████
-                \t\t\t         ██      ██  ██   ██  ██  ██   ██ ██   ██ ██      ██
-                \t\t\t         ███████ █████     ████   ██████  ███████ ███████ ███████
-                \t\t\t              ██ ██  ██     ██    ██      ██   ██      ██      ██
-                \t\t\t         ███████ ██   ██    ██    ██      ██   ██ ███████ ███████
+                    """);
 
-
-                \t\t          !============== An online flight reservation system ===============!
-
-                        """);
+        printCentered("╠════════════ Airlines Reservation System ════════════╣\n\n");
     }
 
     public void showDisplayMessage() {
         if (displayMessage.equals(""))
             return;
-        vline(120, '=');
-        System.out.println("\t\t\t" + displayMessage);
-        vline(120, '=');
+        vline(120, '-');
+        printCentered(displayMessage);
+        vline(120, '-');
         displayMessage = "";
     }
 
@@ -45,18 +56,18 @@ public class Start {
     public void showStartMenu() {
         showDisplayMessage();
         System.out.println("""
-                \t\t\t +--------------------------------------------------------------------+
-                \t\t\t |                                                                    |
-                \t\t\t |                        1. Log in as admin                          |
-                \t\t\t |                                                                    |
-                \t\t\t |                        2. Log in as passenger                      |
-                \t\t\t |                                                                    |
-                \t\t\t |                        3. Register as passenger                    |
-                \t\t\t |                                                                    |
-                \t\t\t |                        4. Exit                                     |
-                \t\t\t |                                                                    |
-                \t\t\t +--------------------------------------------------------------------+
-                    """);
+                \t\t\t\t     ╔════════════════════════════════════════════╗
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ║                                            ║
+                \t\t\t\t     ╚════════════════════════════════════════════╝
+                        """);
     }
 
     public static void main(String[] args) throws Exception {
@@ -68,7 +79,7 @@ public class Start {
             // clear the screen
             start.showAppTitle();
             start.showStartMenu();
-            System.out.print("\t\t\tEnter your choice: ");
+            System.out.print("\t\t\t\t\t Enter your choice: ");
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
