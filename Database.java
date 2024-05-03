@@ -9,23 +9,16 @@ public class Database {
     // link database password
     private static String PASSWORD = "";
 
-    public ResultSet databaseGet(String query) throws Exception {
+    public ResultSet databaseQuery(String query) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         Statement statement = connection.createStatement();
-        if (query.contains("SELECT")) {
+        if (query.contains("SELECT") || query.contains("select")) {
             return statement.executeQuery(query);
         } else {
             statement.executeUpdate(query);
             return null;
         }
-    }
-
-    public void databaseUpdate(String query) throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
     }
 
 }

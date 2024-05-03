@@ -4,8 +4,9 @@ public class Start {
 
     public static String displayMessage = "";
 
-    public static void printCentered(String text) {
-        System.out.printf("%" + ((text.length() + 120) / 2) + "s\n", text);
+    public static void printCentered(String message) {
+        int width = 120;
+        System.out.print(String.format("%" + ((width + message.length()) / 2) + "s\n", message));
     }
 
     public static void clearScreen() {
@@ -29,23 +30,25 @@ public class Start {
         clearScreen();
         System.out.println("""
 
-                \t\t\t       ███████ ██   ██ ██    ██ ██████   █████  ███████ ███████
-                \t\t\t       ██      ██  ██   ██  ██  ██   ██ ██   ██ ██      ██
-                \t\t\t       ███████ █████     ████   ██████  ███████ ███████ ███████
-                \t\t\t            ██ ██  ██     ██    ██      ██   ██      ██      ██
-                \t\t\t       ███████ ██   ██    ██    ██      ██   ██ ███████ ███████
-
+                \t\t\t\t███████ ██   ██ ██    ██ ██████   █████  ███████ ███████
+                \t\t\t\t██      ██  ██   ██  ██  ██   ██ ██   ██ ██      ██
+                \t\t\t\t███████ █████     ████   ██████  ███████ ███████ ███████
+                \t\t\t\t     ██ ██  ██     ██    ██      ██   ██      ██      ██
+                \t\t\t\t███████ ██   ██    ██    ██      ██   ██ ███████ ███████
                     """);
 
-        printCentered("╠════════════ Airlines Reservation System ════════════╣\n\n");
+        printCentered("╠═════════════ Airlines Reservation System ════════════╣");
     }
 
     public void showDisplayMessage() {
-        if (displayMessage.equals(""))
+        if (displayMessage.equals("")) {
+            System.out.println("\n");
             return;
-        vline(120, '-');
+        }
+        System.out.println("\n");
+        vline(120, '─');
         printCentered(displayMessage);
-        vline(120, '-');
+        vline(120, '─');
         displayMessage = "";
     }
 
@@ -56,17 +59,15 @@ public class Start {
     public void showStartMenu() {
         showDisplayMessage();
         System.out.println("""
-                \t\t\t\t     ╔════════════════════════════════════════════╗
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ║                                            ║
-                \t\t\t\t     ╚════════════════════════════════════════════╝
+                \t\t\t\t╔══════════════════════════════════════════════════════╗
+                \t\t\t\t║  1. ADMIN login                                      ║
+                \t\t\t\t╟──────────────────────────────────────────────────────╢
+                \t\t\t\t║  2. Passenger login                                  ║
+                \t\t\t\t╟──────────────────────────────────────────────────────╢
+                \t\t\t\t║  3. Register                                         ║
+                \t\t\t\t╟──────────────────────────────────────────────────────╢
+                \t\t\t\t║  4. Exit                                             ║
+                \t\t\t\t╚══════════════════════════════════════════════════════╝
                         """);
     }
 
@@ -79,7 +80,7 @@ public class Start {
             // clear the screen
             start.showAppTitle();
             start.showStartMenu();
-            System.out.print("\t\t\t\t\t Enter your choice: ");
+            System.out.print("\t\t\t\tEnter your choice: ");
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:

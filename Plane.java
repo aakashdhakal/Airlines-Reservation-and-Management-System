@@ -42,7 +42,7 @@ public class Plane extends Start {
         if (flightId != 0) {
             query += " AND id = " + flightId;
         }
-        ResultSet planes = database.databaseGet(query + ";");
+        ResultSet planes = database.databaseQuery(query + ";");
         if (planes.next()) {
             return planes;
         } else {
@@ -52,7 +52,7 @@ public class Plane extends Start {
 
     public boolean checkSeatCapacity(int flightId, int numberOfSeats) throws Exception {
         ResultSet planes = database
-                .databaseGet("SELECT * FROM planes INNER JOIN reservations WHERE plane_id = " + flightId + ";");
+                .databaseQuery("SELECT * FROM planes INNER JOIN reservations WHERE plane_id = " + flightId + ";");
         if (planes.next()) {
             int reserved = planes.getRow();
             int capacity = planes.getInt("capacity");

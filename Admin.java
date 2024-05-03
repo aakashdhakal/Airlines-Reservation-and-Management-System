@@ -1,7 +1,10 @@
 import java.io.Console;
+import java.sql.ResultSet;
 import java.util.Scanner;
 
 public class Admin extends User {
+
+    Database database = new Database();
 
     public void adminLogin() throws Exception {
         Scanner scanner = new Scanner(System.in);
@@ -19,7 +22,11 @@ public class Admin extends User {
 
         if (authenticateUser(username, password, role)) {
             System.out.println("Login successful");
-            userId = getUserId(username);
+            ResultSet user = database.databaseQuery("select * from users where username = '" + username + "';");
+            user.next();
+            userId = user.getInt("id");
+            userFirstName = user.getString("first_name");
+            userLastName = user.getString("last_name");
         } else {
             System.out.println("Login failed");
         }
