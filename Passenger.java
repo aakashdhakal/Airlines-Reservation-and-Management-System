@@ -32,7 +32,7 @@ public class Passenger extends User {
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
                     \t\t\t\t║  3. Show your reservations                           ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  4. Exit                                             ║
+                    \t\t\t\t║  4. Logout                                           ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝
                             """);
             System.out.print("\t\t\t\tEnter your choice: ");
@@ -50,14 +50,13 @@ public class Passenger extends User {
                     // cancelReservation();
                     break;
                 case 4:
-                    System.exit(0);
+                    start.showStartMenu();
                     break;
                 default:
                     System.out.println("Invalid choice");
             }
         } while (choice != 4);
         scanner.close();
-
     }
 
 }

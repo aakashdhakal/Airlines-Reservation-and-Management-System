@@ -11,7 +11,7 @@ public class Admin extends User {
         printCentered("║            Welcome to Skypass Admin Portal           ║");
         printCentered("╚══════════════════════════════════════════════════════╝");
         // show user name and role
-        System.out.print("\t\t\t\t Logged in as: " + userFirstName + " " + userLastName);
+        printCentered("Logged in as: " + userFirstName + " " + userLastName);
         showDisplayMessage();
     }
 

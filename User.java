@@ -59,7 +59,7 @@ public class User extends Start {
                                     + flight.flightId + ", "
                                     + numberOfSeats + ");");
 
-                    System.out.println("Reservation successful. Your reservation id is " + reservationId);
+                    printCentered(green + "Reservation successful. Your reservation id is " + reservationId + reset);
                 } else {
                     // Inform the user that the requested number of seats are not availabl
                     System.out.println("Sorry ! The requested number of seats are not available.");
@@ -84,7 +84,7 @@ public class User extends Start {
 
             // If the username is not valid, display an error message
             if (!checkUsername(username)) {
-                setDisplayMessage("!!OOPS! The username is not correct!!");
+                setDisplayMessage(red + "!!OOPS! The username is not correct!!" + reset);
             }
         } while (!checkUsername(username));
 
@@ -108,7 +108,7 @@ public class User extends Start {
             return true;
         } else {
             // If the authentication failed, display an error message and return false
-            setDisplayMessage("Login failed");
+            setDisplayMessage("!! Failed The " + role + " of username " + username + " does not exist !!");
             return false;
         }
     }
@@ -143,7 +143,7 @@ public class User extends Start {
                         + userContactNumber + "');");
 
         // Display a success message
-        setDisplayMessage("User registered successfully");
+        setDisplayMessage(green + "User registered successfully" + reset);
     }
 
     public void showTickets(ResultSet reservation) throws Exception {

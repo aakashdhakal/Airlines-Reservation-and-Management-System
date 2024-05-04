@@ -2,6 +2,14 @@ import java.util.Scanner;
 
 public class Start {
 
+    String red = "\033[0;31m";
+    String reset = "\u001B[0m";
+    String green = "\033[0;32m";
+    String yellow = "\033[0;33m";
+    String blue = "\033[0;34m";
+    String purple = "\033[0;35m";
+    String cyan = "\033[0;36m";
+
     public static String displayMessage = "";
 
     public static void printCentered(String message) {
@@ -46,9 +54,7 @@ public class Start {
             return;
         }
         System.out.println("\n");
-        vline(120, '─');
         printCentered(displayMessage);
-        vline(120, '─');
         displayMessage = "";
     }
 
