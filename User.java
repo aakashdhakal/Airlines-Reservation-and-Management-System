@@ -79,15 +79,14 @@ public class User extends Start {
         do {
             start.showAppTitle();
             showDisplayMessage();
-            System.out.print("\t\t\t\tEnter your username: ");
+            System.out.print("\n\t\t\t\tEnter your username: ");
             username = scanner.nextLine();
 
             // If the username is not valid, display an error message
             if (!checkUsername(username)) {
-                setDisplayMessage(red + "!!OOPS! The username is not correct!!" + reset);
+                setDisplayMessage(red + "\t!!OOPS! The username is not correct!!" + reset);
             }
         } while (!checkUsername(username));
-
         System.out.print("\t\t\t\tEnter your password: ");
         char[] passwordArray = console.readPassword();
         password = new String(passwordArray);
@@ -108,7 +107,7 @@ public class User extends Start {
             return true;
         } else {
             // If the authentication failed, display an error message and return false
-            setDisplayMessage("!! Failed The " + role + " of username " + username + " does not exist !!");
+            setDisplayMessage(red + "\t!!OOPS! The username or password is incorrect!!" + reset);
             return false;
         }
     }
@@ -119,12 +118,12 @@ public class User extends Start {
         do {
             start.showAppTitle();
             showDisplayMessage();
-            System.out.print("\t\t\t\tEnter a username: ");
+            System.out.print("\n\t\t\t\tEnter a username: ");
             username = scanner.nextLine();
 
             // If the username is already taken, display an error message
             if (checkUsername(username)) {
-                setDisplayMessage("!!OOPS! The username is already taken!!");
+                setDisplayMessage(red + "\t!!OOPS! The username is already taken!!" + reset);
             }
         } while (checkUsername(username));
         System.out.print("\t\t\t\tEnter your password: ");
@@ -143,7 +142,7 @@ public class User extends Start {
                         + userContactNumber + "');");
 
         // Display a success message
-        setDisplayMessage(green + "User registered successfully" + reset);
+        setDisplayMessage(green + "\tUser registered successfully" + reset);
     }
 
     public void showTickets(ResultSet reservation) throws Exception {

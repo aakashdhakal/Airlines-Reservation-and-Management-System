@@ -15,7 +15,7 @@ public class Passenger extends User {
         printCentered("║          Welcome to Skypass Passenger Portal         ║");
         printCentered("╚══════════════════════════════════════════════════════╝");
         // show user name and role
-        printCentered("Logged in as: " + userFirstName + " " + userLastName);
+        printCentered("\tLogged in as: " + yellow + userFirstName + " " + userLastName + reset);
         showDisplayMessage();
     }
 
@@ -39,7 +39,6 @@ public class Passenger extends User {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    setDisplayMessage("Add a reservation");
                     showAppTitle();
                     reserveSeat();
                     break;

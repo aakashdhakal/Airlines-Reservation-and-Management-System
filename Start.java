@@ -36,14 +36,14 @@ public class Start {
 
     public void showAppTitle() {
         clearScreen();
-        System.out.println("""
+        System.out.println(cyan + """
 
                 \t\t\t\t███████ ██   ██ ██    ██ ██████   █████  ███████ ███████
                 \t\t\t\t██      ██  ██   ██  ██  ██   ██ ██   ██ ██      ██
                 \t\t\t\t███████ █████     ████   ██████  ███████ ███████ ███████
                 \t\t\t\t     ██ ██  ██     ██    ██      ██   ██      ██      ██
                 \t\t\t\t███████ ██   ██    ██    ██      ██   ██ ███████ ███████
-                    """);
+                    """ + reset);
 
         printCentered("╠═════════════ Airlines Reservation System ════════════╣");
     }
@@ -64,7 +64,7 @@ public class Start {
 
     public void showStartMenu() {
         showDisplayMessage();
-        System.out.println("""
+        printCentered("""
                 \t\t\t\t╔══════════════════════════════════════════════════════╗
                 \t\t\t\t║  1. ADMIN login                                      ║
                 \t\t\t\t╟──────────────────────────────────────────────────────╢
