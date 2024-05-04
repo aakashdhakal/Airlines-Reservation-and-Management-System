@@ -73,6 +73,7 @@ public class Start {
 
     public static void main(String[] args) throws Exception {
         Start start = new Start();
+        User user = new User();
         int choice;
         Scanner scanner = new Scanner(System.in);
 
@@ -84,16 +85,19 @@ public class Start {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    Admin admin = new Admin();
-                    admin.adminLogin();
+                    if (user.userLogin("admin")) {
+                        Admin admin = new Admin();
+                        admin.adminMenu();
+                    }
                     break;
                 case 2:
-                    Passenger passenger = new Passenger();
-                    passenger.passengerLogin();
+                    if (user.userLogin("passenger")) {
+                        Passenger passenger = new Passenger();
+                        passenger.passengerMenu();
+                    }
                     break;
                 case 3:
-                    // Passenger passenger = new Passenger();
-                    // passenger.registerPassenger();
+                    user.registerUser("passenger");
                     break;
                 case 4:
                     System.exit(0);

@@ -1,6 +1,4 @@
-import java.io.Console;
 import java.util.Scanner;
-import java.sql.*;
 
 public class Passenger extends User {
 
@@ -12,45 +10,13 @@ public class Passenger extends User {
     @Override
     public void showAppTitle() {
         clearScreen();
-        System.out.println("Hello" + username);
-        vline(120, '─');
-
-    }
-
-    public void passengerLogin() throws Exception {
-
-        Console console = System.console();
-        do {
-            start.showAppTitle();
-            showDisplayMessage();
-            System.out.print("\t\t\t\tEnter your username: ");
-            if (!checkUsername(username)) {
-                setDisplayMessage("!!OOPS! The username is not correct!!");
-            }
-            username = scanner.nextLine();
-        } while (!checkUsername(username));
-        System.out.print("\t\t\t\tEnter your password: ");
-        char[] passwordArray = console.readPassword();
-        password = new String(passwordArray);
-        java.util.Arrays.fill(passwordArray, ' ');
-        role = "passenger";
-
-        if (authenticateUser(username, password, role)) {
-            ResultSet user = database.databaseQuery("select * from users where username = '" + username + "';");
-            user.next();
-            userId = user.getInt("id");
-            userFirstName = user.getString("firstname");
-            userLastName = user.getString("lastname");
-
-        } else {
-            setDisplayMessage("Login failed");
-            return;
-        }
-        passengerMenu();
-    }
-
-    public void registerPassenger() throws Exception {
-
+        printCentered("\n");
+        printCentered("╔══════════════════════════════════════════════════════╗");
+        printCentered("║          Welcome to Skypass Passenger Portal         ║");
+        printCentered("╚══════════════════════════════════════════════════════╝");
+        // show user name and role
+        printCentered("Logged in as: " + userFirstName + " " + userLastName);
+        showDisplayMessage();
     }
 
     public void passengerMenu() throws Exception {
@@ -69,10 +35,12 @@ public class Passenger extends User {
                     \t\t\t\t║  4. Exit                                             ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝
                             """);
-            System.out.print("\t\t\tEnter your choice: ");
+            System.out.print("\t\t\t\tEnter your choice: ");
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
+                    setDisplayMessage("Add a reservation");
+                    showAppTitle();
                     reserveSeat();
                     break;
                 case 2:
