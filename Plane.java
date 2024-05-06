@@ -21,28 +21,30 @@ public class Plane extends Start {
 
     // display plane information in table format
     public void showPlaneDetails(ResultSet planes) throws Exception {
+        String format = "| %-2s | %-15s | %-20s | %-20s | %-20s | %-18s | %-17s |\n";
+
         vline(120, '═');
-        System.out.printf("%s %10s %22s %23s %20s %20s %13s\n", "S.N", "Name", "Origin", "Destination",
+        System.out.printf(format, "S.N", "Name", "Origin", "Destination",
                 "Departure Date",
                 "Departure Time", "Fare");
         vline(120, '═');
-        do {
-            System.out.printf("%2s %15s %20s %20s %20s %18s %17s\n", planes.getString("id"),
+        while (planes.next()) {
+            System.out.printf(format, planes.getString("id"),
                     planes.getString("name"), planes.getString("origin"), planes.getString("destination"),
                     planes.getString("departure_date"), planes.getString("departure_time"), "Rs "
                             + planes.getString("fare"));
             vline(120, '─');
-        } while (planes.next());
+        }
     }
 
     // check if the flight exists for the given origin and destination
     public ResultSet checkFlights(int flightId, String origin, String destination) throws Exception {
 
-        String query = "SELECT * FROM planes WHERE origin = '" + origin + "' AND destination = '" + destination + "'";
+        String query = "SELECT * FROM planes WHERE origin = ? AND destination = ?";
         if (flightId != 0) {
             query += " AND id = " + flightId;
         }
-        ResultSet planes = database.databaseQuery(query + ";");
+        ResultSet planes = database.databaseQuery(query + ";", origin, destination);
         if (planes.next()) {
             return planes;
         } else {
@@ -52,7 +54,7 @@ public class Plane extends Start {
 
     public boolean checkSeatCapacity(int flightId, int numberOfSeats) throws Exception {
         ResultSet planes = database
-                .databaseQuery("SELECT * FROM planes INNER JOIN reservations WHERE plane_id = " + flightId + ";");
+                .databaseQuery("SELECT * FROM planes INNER JOIN reservations WHERE plane_id = ?;", flightId);
         if (planes.next()) {
             int reserved = planes.getRow();
             int capacity = planes.getInt("capacity");

@@ -43,7 +43,7 @@ public class Passenger extends User {
                     reserveSeat();
                     break;
                 case 2:
-                    showTickets(database.databaseQuery("select * from reservations where user_id = " + userId + ";"));
+                    showTickets(database.databaseQuery("select * from reservations where user_id = ?;", userId));
                     break;
                 case 3:
                     // cancelReservation();
@@ -52,7 +52,8 @@ public class Passenger extends User {
                     start.showStartMenu();
                     break;
                 default:
-                    System.out.println("Invalid choice");
+                    setDisplayMessage(red + "\t    ERROR ! Please enter valid option !" + reset);
+
             }
         } while (choice != 4);
         scanner.close();

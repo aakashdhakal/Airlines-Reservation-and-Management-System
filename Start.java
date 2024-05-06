@@ -65,6 +65,7 @@ public class Start {
     public void showStartMenu() {
         showDisplayMessage();
         printCentered("""
+
                 \t\t\t\t╔══════════════════════════════════════════════════════╗
                 \t\t\t\t║  1. ADMIN login                                      ║
                 \t\t\t\t╟──────────────────────────────────────────────────────╢
@@ -109,7 +110,7 @@ public class Start {
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Invalid choice");
+                    setDisplayMessage(start.red + "\t    ERROR ! Please enter valid option !" + start.reset);
             }
 
         } while (choice != 4);

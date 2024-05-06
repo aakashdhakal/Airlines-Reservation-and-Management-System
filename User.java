@@ -34,6 +34,8 @@ public class User extends Start {
 
         // If there are flights available
         if (planes != null) {
+            clearScreen();
+            showAppTitle();
             // Show the details of the available planes
             flight.showPlaneDetails(planes);
 
@@ -53,11 +55,8 @@ public class User extends Start {
 
                     // Insert the reservation into the database
                     database.databaseQuery(
-                            "insert into reservations (ticket_id ,user_id, plane_id, number_of_seats) values ("
-                                    + reservationId + ","
-                                    + userId + ","
-                                    + flight.flightId + ", "
-                                    + numberOfSeats + ");");
+                            "insert into reservations (ticket_id ,user_id, plane_id, number_of_seats) values (?,?,?,?);",
+                            reservationId, userId, flight.flightId, numberOfSeats);
 
                     printCentered(green + "Reservation successful. Your reservation id is " + reservationId + reset);
                 } else {
@@ -95,7 +94,7 @@ public class User extends Start {
         // If the user is authenticated successfully
         if (authenticateUser(username, password, role)) {
             // Query the database for the user's details
-            ResultSet user = database.databaseQuery("select * from users where username = '" + username + "';");
+            ResultSet user = database.databaseQuery("select * from users where username = ?;", username);
             user.next();
 
             // Store the user's details in local variables
@@ -107,7 +106,7 @@ public class User extends Start {
             return true;
         } else {
             // If the authentication failed, display an error message and return false
-            setDisplayMessage(red + "\t!!OOPS! The username or password is incorrect!!" + reset);
+            setDisplayMessage(red + "\tERROR! The username or password is incorrect" + reset);
             return false;
         }
     }
@@ -137,9 +136,8 @@ public class User extends Start {
 
         // Insert the new user's details into the database
         database.databaseQuery(
-                "insert into users (username, password, firstname, lastname, role,phone_no) values ('" + username
-                        + "', '" + password + "', '" + userFirstName + "', '" + userLastName + "', '" + role + "','"
-                        + userContactNumber + "');");
+                "insert into users (username, password, firstname, lastname, role,phone_no) values (?,?,?,?,?,?);",
+                username, password, userFirstName, userLastName, role, userContactNumber);
 
         // Display a success message
         setDisplayMessage(green + "\tUser registered successfully" + reset);
@@ -163,8 +161,8 @@ public class User extends Start {
 
     public boolean authenticateUser(String username, String password, String role) throws Exception {
         ResultSet user = database
-                .databaseQuery("SELECT * FROM users WHERE username = '" + username + "' AND password = '"
-                        + password + "' AND role = '" + role + "';");
+                .databaseQuery("SELECT * FROM users WHERE username = ? AND password = ? AND role = ?;", username,
+                        password, role);
         if (user.next()) {
             userId = user.getInt("id");
             return true;
@@ -173,7 +171,7 @@ public class User extends Start {
     }
 
     public boolean checkUsername(String username) throws Exception {
-        ResultSet user = database.databaseQuery("SELECT * FROM users WHERE username = '" + username + "';");
+        ResultSet user = database.databaseQuery("SELECT * FROM users WHERE username = ?;", username);
         if (user.next()) {
             return true;
         }
