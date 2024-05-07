@@ -110,7 +110,8 @@ public class Start {
                     System.exit(0);
                     break;
                 default:
-                    setDisplayMessage(start.red + "\t    ERROR ! Please enter valid option !" + start.reset);
+                    setDisplayMessage(start.red + "\t ERROR ! Please enter valid option !" +
+                            start.reset);
             }
 
         } while (choice != 4);

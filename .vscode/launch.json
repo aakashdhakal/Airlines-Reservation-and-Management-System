@@ -6,6 +6,20 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "Plane",
+			"request": "launch",
+			"mainClass": "Plane",
+			"projectName": "Airplane-Reservation-System_8bd041db"
+		},
+		{
+			"type": "java",
+			"name": "Admin",
+			"request": "launch",
+			"mainClass": "Admin",
+			"projectName": "Airplane-Reservation-System_8bd041db"
+		},
+		{
+			"type": "java",
 			"name": "Start",
 			"request": "launch",
 			"mainClass": "Start",

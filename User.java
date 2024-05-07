@@ -144,6 +144,10 @@ public class User extends Start {
     }
 
     public void showTickets(ResultSet reservation) throws Exception {
+        if (!reservation.next()) {
+            setDisplayMessage(red + "\t!! No reservations found  !!" + reset);
+            return;
+        }
         while (reservation.next()) {
             System.out.printf("%-20s %s\n", "Ticket Id:", reservation.getString("ticket_id"));
             vline(120, '-');
@@ -167,7 +171,7 @@ public class User extends Start {
                 userId);
         // If the user has no reservations
         if (!reservation.next()) {
-            setDisplayMessage(red + "\tNo reservations found" + reset);
+            setDisplayMessage(red + "\t!! No reservations found !!" + reset);
             return;
         }
         // Display the user's reservations

@@ -15,7 +15,8 @@ public class Passenger extends User {
         printCentered("║          Welcome to Skypass Passenger Portal         ║");
         printCentered("╚══════════════════════════════════════════════════════╝");
         // show user name and role
-        printCentered("\tLogged in as: " + yellow + userFirstName + " " + userLastName + reset);
+        printCentered(
+                "\tLogged in as: " + yellow + userFirstName + " " + userLastName + " (" + username + ") " + reset);
         showDisplayMessage();
     }
 
@@ -28,9 +29,9 @@ public class Passenger extends User {
                     \t\t\t\t╔══════════════════════════════════════════════════════╗
                     \t\t\t\t║  1. Add a reservation                                ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  2. Cancel a reservation                             ║
+                    \t\t\t\t║  2. Show your reservations                           ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  3. Show your reservations                           ║
+                    \t\t\t\t║  3. Cancel a reservation                             ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
                     \t\t\t\t║  4. Logout                                           ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝

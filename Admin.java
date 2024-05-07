@@ -57,6 +57,8 @@ public class Admin extends User {
         }
     }
 
+    
+
     public void adminMenu() throws Exception {
         int choice;
         Admin admin = new Admin();
@@ -69,18 +71,20 @@ public class Admin extends User {
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
                     \t\t\t\t║  2. Add an administrator                             ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  3. Show your reservations                           ║
+                    \t\t\t\t║  3. Show user details                                ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  4. Exit                                             ║
+                    \t\t\t\t║  4. Logout                                           ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝
                             """);
             System.out.print("\t\t\t\tEnter your choice: ");
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
+                    clearScreen();
+                    showAppTitle();
                     flight.showPlaneDetails(database.databaseQuery("select * from planes;"));
-                    System.out.flush(); // Flush the output stream
-                    System.out.println("\n\nPress enter to continue...");
+                    System.out.print("Press enter to continue...");
+                    scanner.nextLine();
                     scanner.nextLine();
                     break;
                 case 2:
