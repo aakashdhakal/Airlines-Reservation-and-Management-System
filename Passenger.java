@@ -46,7 +46,7 @@ public class Passenger extends User {
                     showTickets(database.databaseQuery("select * from reservations where user_id = ?;", userId));
                     break;
                 case 3:
-                    // cancelReservation();
+                    cancelReservation();
                     break;
                 case 4:
                     start.showStartMenu();

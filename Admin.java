@@ -79,6 +79,7 @@ public class Admin extends User {
             switch (choice) {
                 case 1:
                     flight.showPlaneDetails(database.databaseQuery("select * from planes;"));
+                    System.out.flush(); // Flush the output stream
                     System.out.println("\n\nPress enter to continue...");
                     scanner.nextLine();
                     break;

@@ -1,4 +1,5 @@
 import java.sql.ResultSet;
+import java.util.Scanner;
 
 public class Plane extends Start {
     public int flightId;
@@ -11,6 +12,8 @@ public class Plane extends Start {
     public int fare;
 
     private Database database = new Database();
+
+    private Scanner scanner = new Scanner(System.in);
 
     public void vline(int n, char ch) {
         for (int i = 0; i < n; i++) {
@@ -35,6 +38,7 @@ public class Plane extends Start {
                             + planes.getString("fare"));
             vline(120, '─');
         }
+        scanner.nextLine();
     }
 
     // check if the flight exists for the given origin and destination

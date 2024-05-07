@@ -159,6 +159,30 @@ public class User extends Start {
         }
     }
 
+    // function to cancel a reservation
+    public void cancelReservation() throws Exception {
+        // Query the database for reservations associated with the current user
+        ResultSet reservation = database.databaseQuery(
+                "select * from reservations inner join planes on reservations.plane_id = planes.id where user_id = ?;",
+                userId);
+        // If the user has no reservations
+        if (!reservation.next()) {
+            setDisplayMessage(red + "\tNo reservations found" + reset);
+            return;
+        }
+        // Display the user's reservations
+        showTickets(reservation);
+        System.out.print("Enter the ticket id of the reservation you want to cancel: ");
+        int ticketId = scanner.nextInt();
+        System.out.print("Are you sure you want to cancel the reservation? (y/n): ");
+        String choice = scanner.nextLine();
+        if (choice.equals("y")) {
+            // Delete the reservation from the database
+            database.databaseQuery("delete from reservations where ticket_id = ?;", ticketId);
+            setDisplayMessage(green + "Reservation cancelled successfully" + reset);
+        }
+    }
+
     public boolean authenticateUser(String username, String password, String role) throws Exception {
         ResultSet user = database
                 .databaseQuery("SELECT * FROM users WHERE username = ? AND password = ? AND role = ?;", username,
