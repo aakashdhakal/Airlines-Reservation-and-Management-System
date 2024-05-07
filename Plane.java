@@ -24,7 +24,7 @@ public class Plane extends Start {
 
     // display plane information in table format
     public void showPlaneDetails(ResultSet planes) throws Exception {
-        String format = "| %-2s | %-15s | %-20s | %-20s | %-20s | %-18s | %-17s |\n";
+        String format = "| %-5s | %-10s | %-15s | %-15s | %-15s | %-12s | %-11s |\n";
 
         vline(120, '═');
         System.out.printf(format, "S.N", "Name", "Origin", "Destination",
