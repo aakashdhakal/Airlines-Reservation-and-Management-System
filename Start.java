@@ -81,8 +81,8 @@ public class Start {
     public static void main(String[] args) throws Exception {
         Start start = new Start();
         User user = new User();
-        int choice;
         Scanner scanner = new Scanner(System.in);
+        int choice;
 
         do {
             // clear the screen

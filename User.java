@@ -1,6 +1,6 @@
-import java.util.Scanner;
 import java.io.Console;
 import java.sql.*;
+import java.util.Scanner;
 
 public class User extends Start {
 
@@ -18,7 +18,7 @@ public class User extends Start {
     private Database database = new Database();
     private Plane flight = new Plane();
     private Start start = new Start();
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     // function to reserve seat
     public void reserveSeat() throws Exception {
@@ -30,7 +30,7 @@ public class User extends Start {
         flight.origin = scanner.nextLine();
 
         // Check if there are any flights available for the given origin and destination
-        planes = flight.checkFlights(flight.flightId, flight.origin, flight.destination);
+        planes = flight.checkFlights(flight.origin, flight.destination);
 
         // If there are flights available
         if (planes != null) {
@@ -39,11 +39,11 @@ public class User extends Start {
             // Show the details of the available planes
             flight.showPlaneDetails(planes);
 
-            System.out.print("Select the flight you want to reserve : ");
+            System.out.print("Enter the id of the flight to reserve: ");
             flight.flightId = scanner.nextInt();
 
             // Check if the selected flight is valid
-            if (flight.checkFlights(flight.flightId, flight.origin, flight.destination) != null) {
+            if (flight.checkFlights(flight.origin, flight.destination, flight.flightId) != null) {
                 System.out.print("Enter the number of seats you want to reserve: ");
                 numberOfSeats = scanner.nextInt();
                 scanner.close();
@@ -58,16 +58,18 @@ public class User extends Start {
                             "insert into reservations (ticket_id ,user_id, plane_id, number_of_seats) values (?,?,?,?);",
                             reservationId, userId, flight.flightId, numberOfSeats);
 
-                    printCentered(green + "Reservation successful. Your reservation id is " + reservationId + reset);
+                    setDisplayMessage(
+                            green + "\t Reservation successful. Your reservation id is " + reservationId + reset);
                 } else {
                     // Inform the user that the requested number of seats are not availabl
-                    System.out.println("Sorry ! The requested number of seats are not available.");
+                    setDisplayMessage(red + "\tSorry ! The requested number of seats are not available." + reset);
                 }
             } else {
-                System.out.println("Sorry ! Flight does not exist.");
+                // Inform the user that the selected flight is not valid
+                setDisplayMessage(red + "\tSorry ! The selected flight is not valid." + reset);
             }
         } else {
-            System.out.println("Sorry ! No flights available.");
+            setDisplayMessage(red + "\tSorry ! No flights available for the given destination." + reset);
         }
     }
 
@@ -144,7 +146,7 @@ public class User extends Start {
     }
 
     public void showTickets(ResultSet reservation) throws Exception {
-        if (!reservation.next()) {
+        if (!reservation.isBeforeFirst()) {
             setDisplayMessage(red + "\t!! No reservations found  !!" + reset);
             return;
         }
@@ -170,7 +172,7 @@ public class User extends Start {
                 "select * from reservations inner join planes on reservations.plane_id = planes.id where user_id = ?;",
                 userId);
         // If the user has no reservations
-        if (!reservation.next()) {
+        if (!reservation.isBeforeFirst()) {
             setDisplayMessage(red + "\t!! No reservations found !!" + reset);
             return;
         }
@@ -178,12 +180,13 @@ public class User extends Start {
         showTickets(reservation);
         System.out.print("Enter the ticket id of the reservation you want to cancel: ");
         int ticketId = scanner.nextInt();
+        scanner.nextLine(); // Consume the leftover newline character
         System.out.print("Are you sure you want to cancel the reservation? (y/n): ");
         String choice = scanner.nextLine();
         if (choice.equals("y")) {
             // Delete the reservation from the database
             database.databaseQuery("delete from reservations where ticket_id = ?;", ticketId);
-            setDisplayMessage(green + "Reservation cancelled successfully" + reset);
+            setDisplayMessage(green + "\tReservation cancelled successfully" + reset);
         }
     }
 
@@ -205,5 +208,4 @@ public class User extends Start {
         }
         return false;
     }
-
 }

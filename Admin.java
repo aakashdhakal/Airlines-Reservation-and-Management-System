@@ -1,10 +1,12 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class Admin extends User {
 
     Database database = new Database();
     Plane flight = new Plane();
     Passenger passenger = new Passenger();
+    Scanner scanner = new Scanner(System.in);
 
     @Override
     public void showAppTitle() {
@@ -57,8 +59,6 @@ public class Admin extends User {
         }
     }
 
-    
-
     public void adminMenu() throws Exception {
         int choice;
         Admin admin = new Admin();
@@ -100,7 +100,6 @@ public class Admin extends User {
                     setDisplayMessage(red + "\t    ERROR ! Please enter valid option !" + reset);
             }
         } while (choice != 4);
-        scanner.close();
 
     }
 

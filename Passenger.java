@@ -4,7 +4,6 @@ public class Passenger extends User {
 
     Plane flight = new Plane();
     Database database = new Database();
-    Scanner scanner = new Scanner(System.in);
     Start start = new Start();
 
     @Override
@@ -23,6 +22,7 @@ public class Passenger extends User {
     public void passengerMenu() throws Exception {
         int choice;
         do {
+            Scanner scanner = new Scanner(System.in);
             showAppTitle();
             showDisplayMessage();
             System.out.println("""
@@ -44,7 +44,14 @@ public class Passenger extends User {
                     reserveSeat();
                     break;
                 case 2:
-                    showTickets(database.databaseQuery("select * from reservations where user_id = ?;", userId));
+                    clearScreen();
+                    showAppTitle();
+                    showTickets(database.databaseQuery(
+                            "select * from reservations inner join planes on reservations.plane_id = planes.id where user_id = ?;",
+                            userId));
+                    System.out.print("Press enter to continue...");
+                    scanner.nextLine();
+                    scanner.nextLine();
                     break;
                 case 3:
                     cancelReservation();
@@ -56,8 +63,8 @@ public class Passenger extends User {
                     setDisplayMessage(red + "\t    ERROR ! Please enter valid option !" + reset);
 
             }
+
         } while (choice != 4);
-        scanner.close();
     }
 
 }

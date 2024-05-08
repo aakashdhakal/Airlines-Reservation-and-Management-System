@@ -1,7 +1,7 @@
 import java.sql.ResultSet;
-import java.util.Scanner;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class Plane extends Start {
     public int flightId;
@@ -14,8 +14,8 @@ public class Plane extends Start {
     public int fare;
 
     private Database database = new Database();
-    private Scanner scanner = new Scanner(System.in);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+    Scanner scanner = new Scanner(System.in);
 
     public void vline(int n, char ch) {
         for (int i = 0; i < n; i++) {
@@ -53,14 +53,14 @@ public class Plane extends Start {
     }
 
     // check if the flight exists for the given origin and destination
-    public ResultSet checkFlights(int flightId, String origin, String destination) throws Exception {
+    public ResultSet checkFlights(String origin, String destination, Object... params) throws Exception {
 
         String query = "SELECT * FROM planes WHERE origin = ? AND destination = ?";
-        if (flightId != 0) {
-            query += " AND id = " + flightId;
+        if (params.length > 0) {
+            query += " AND id = " + params[0];
         }
         ResultSet planes = database.databaseQuery(query + ";", origin, destination);
-        if (planes.next()) {
+        if (planes.isBeforeFirst()) {
             return planes;
         } else {
             return null;
