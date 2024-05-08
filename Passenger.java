@@ -27,13 +27,15 @@ public class Passenger extends User {
             showDisplayMessage();
             System.out.println("""
                     \t\t\t\t╔══════════════════════════════════════════════════════╗
-                    \t\t\t\t║  1. Add a reservation                                ║
+                    \t\t\t\t║  1. View Available Flights                           ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  2. Show your reservations                           ║
+                    \t\t\t\t║  2. Add a reservation                                ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  3. Cancel a reservation                             ║
+                    \t\t\t\t║  3. Show your reservations                           ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  4. Logout                                           ║
+                    \t\t\t\t║  4. Cancel a reservation                             ║
+                    \t\t\t\t╟──────────────────────────────────────────────────────╢
+                    \t\t\t\t║  5. Logout                                           ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝
                             """);
             System.out.print("\t\t\t\tEnter your choice: ");
@@ -41,9 +43,16 @@ public class Passenger extends User {
             switch (choice) {
                 case 1:
                     showAppTitle();
-                    reserveSeat();
+                    flight.showPlaneDetails(database.databaseQuery("select * from planes where is_available = 1;"));
+                    System.out.print("Press enter to continue...");
+                    scanner.nextLine();
+                    scanner.nextLine();
                     break;
                 case 2:
+                    showAppTitle();
+                    reserveSeat();
+                    break;
+                case 3:
                     clearScreen();
                     showAppTitle();
                     showTickets(database.databaseQuery(
@@ -53,10 +62,10 @@ public class Passenger extends User {
                     scanner.nextLine();
                     scanner.nextLine();
                     break;
-                case 3:
+                case 4:
                     cancelReservation();
                     break;
-                case 4:
+                case 5:
                     start.showStartMenu();
                     break;
                 default:
