@@ -5,6 +5,7 @@ public class Passenger extends User {
     Plane flight = new Plane();
     Database database = new Database();
     Start start = new Start();
+    Scanner scanner = new Scanner(System.in);
 
     @Override
     public void showAppTitle() {
@@ -22,7 +23,6 @@ public class Passenger extends User {
     public void passengerMenu() throws Exception {
         int choice;
         do {
-            Scanner scanner = new Scanner(System.in);
             showAppTitle();
             showDisplayMessage();
             System.out.println("""
