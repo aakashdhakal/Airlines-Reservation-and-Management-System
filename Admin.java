@@ -94,7 +94,6 @@ public class Admin extends User {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    clearScreen();
                     showAppTitle();
                     flight.showPlaneDetails(database.databaseQuery("select * from planes;"));
                     System.out.print("Press enter to continue...");
@@ -107,12 +106,10 @@ public class Admin extends User {
                     // flight.addEditPlaneDetails();
                     // break;
                 case 3:
-                    clearScreen();
                     showAppTitle();
                     addAdmin();
                     break;
                 case 4:
-                    clearScreen();
                     showAppTitle();
                     showUsers();
                     System.out.print("Press enter to continue...");
@@ -120,17 +117,15 @@ public class Admin extends User {
                     scanner.nextLine();
                     break;
                 case 5:
-                    clearScreen();
                     showAppTitle();
                     passenger.passengerMenu();
                     break;
                 case 6:
-                    clearScreen();
-                    showAppTitle();
-                    setDisplayMessage(green + "\t\t\t\tLogged out successfully" + reset);
+                    showStartMenu();
+                    setDisplayMessage(green + "\tLogged out successfully" + reset);
                     break;
                 default:
-                    setDisplayMessage(red + "\t\t\t\tInvalid choice. Please try again" + reset);
+                    setDisplayMessage(red + "\tInvalid choice. Please try again" + reset);
             }
         } while (choice != 4);
 
