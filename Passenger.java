@@ -141,7 +141,7 @@ public class Passenger extends User {
             switch (choice) {
                 case 1:
                     showAppTitle();
-                    flight.showPlaneDetails(database.databaseQuery("select * from planes where is_available = 1;"));
+                    flight.showPlaneDetails(database.databaseQuery("select * from planes;"));
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
                     scanner.nextLine();
@@ -164,11 +164,8 @@ public class Passenger extends User {
                     cancelReservation();
                     break;
                 case 5:
-                    start.showStartMenu();
-                    scanner.nextLine();
-                    scanner.nextLine();
-
-                    break;
+                    setDisplayMessage(green + "\tLogged out successfully" + reset);
+                    return;
                 default:
                     setDisplayMessage(red + "\t    ERROR ! Please enter valid option !" + reset);
 

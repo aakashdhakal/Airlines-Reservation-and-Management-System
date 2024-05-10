@@ -62,7 +62,12 @@ public class Admin extends User {
     public void showUsers() throws Exception {
         ResultSet resultSet = database.databaseQuery("select * from users;");
         // show user details in table
-        System.out.println("\t\t\t\t" + yellow + "ID\t\tUsername\t\tFirst Name\t\tLast Name\t\tRole" + reset);
+        System.out.print(
+                """
+                        ╔═══════╤══════════════════╤══════════════════╤════════════════════════════════════════════════════════════════════════╗                                                      
+                        ║   ID  │      Username    │       Name       │     Phone Number ║
+                        ╠═══════╪══════════════════╪══════════════════╪════════════════════════════════════════════════════════════════════════╣
+                        """);
         while (resultSet.next()) {
             System.out.println("\t\t\t\t" + resultSet.getInt("id") + "\t\t" + resultSet.getString("username") + "\t\t"
                     + resultSet.getString("firstname") + "\t\t" + resultSet.getString("lastname") + "\t\t"
@@ -79,7 +84,7 @@ public class Admin extends User {
                     \t\t\t\t╔══════════════════════════════════════════════════════╗
                     \t\t\t\t║  1. Show Plane Details                               ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  2. Add or Edit the plane details                    ║
+                    \t\t\t\t║  2. Add a plane                                      ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
                     \t\t\t\t║  3. Add an administrator                             ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
@@ -101,10 +106,9 @@ public class Admin extends User {
                     scanner.nextLine();
                     break;
                 case 2:
-                    // clearScreen();
-                    // showAppTitle();
-                    // flight.addEditPlaneDetails();
-                    // break;
+                    showAppTitle();
+                    flight.addPlane();
+                    break;
                 case 3:
                     showAppTitle();
                     addAdmin();
@@ -121,9 +125,8 @@ public class Admin extends User {
                     passenger.passengerMenu();
                     break;
                 case 6:
-                    showStartMenu();
                     setDisplayMessage(green + "\tLogged out successfully" + reset);
-                    break;
+                    return;
                 default:
                     setDisplayMessage(red + "\tInvalid choice. Please try again" + reset);
             }

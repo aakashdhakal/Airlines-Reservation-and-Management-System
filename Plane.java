@@ -1,13 +1,16 @@
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Plane extends Start {
     public int flightId;
     public String origin;
     public String destination;
-
     public int capacity;
     public String departureDate;
     public String departureTime;
@@ -16,13 +19,6 @@ public class Plane extends Start {
     private Database database = new Database();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
     Scanner scanner = new Scanner(System.in);
-
-    public void vline(int n, char ch) {
-        for (int i = 0; i < n; i++) {
-            System.out.print(ch);
-        }
-        System.out.println("");
-    }
 
     // display plane information in table format
     public void showPlaneDetails(ResultSet planes) throws Exception {
@@ -49,7 +45,7 @@ public class Plane extends Start {
                 """
                         ╙───────┴──────────────────┴──────────────┴──────────────┴────────────────┴────────────────┴───────────┴──────────────╜
                                                         """);
-
+        planes.close();
     }
 
     // check if the flight exists for the given origin and destination
@@ -90,30 +86,70 @@ public class Plane extends Start {
     }
 
     public void addPlane() throws Exception {
-        clearScreen();
-        showAppTitle();
         System.out.println("\n");
         printCentered("Enter Plane Details");
+        printCentered("───────────────────");
         System.out.println("\n");
         System.out.print("\t\t\t\tName: ");
         String name = scanner.nextLine();
-        System.out.print("\t\t\t\tOrigin: ");
+        System.out.print("\t\t\t\tDeparture From: ");
         String origin = scanner.nextLine();
         System.out.print("\t\t\t\tDestination: ");
         String destination = scanner.nextLine();
         System.out.print("\t\t\t\tSeat Capacity: ");
         int capacity = scanner.nextInt();
-        System.out.print("\t\t\t\tDeparture Date (yyyy-mm-dd): ");
-        departureDate = scanner.next();
-        System.out.print("\t\t\t\tDeparture Time (hh:mm AM/PM): ");
-        departureTime = scanner.next();
+        scanner.nextLine();
+        boolean validDateTime = false;
+
+        do {
+            System.out.print("\t\t\t\tDeparture Date (yyyy-mm-dd): ");
+            departureDate = scanner.nextLine();
+            try {
+                LocalDate.parse(departureDate);
+                if (departureDate.compareTo(LocalDate.now().toString()) > 0) {
+                    validDateTime = true;
+                } else {
+                    setDisplayMessage(red
+                            + "\tInvalid date. Please enter a date in the future."
+                            + reset);
+                    showDisplayMessage();
+                }
+                validDateTime = true;
+            } catch (DateTimeParseException e) {
+                setDisplayMessage(red
+                        + "\tInvalid date format. Please enter the date in yyyy-mm-dd format."
+                        + reset);
+                showDisplayMessage();
+            }
+        } while (!validDateTime);
+
+        while (!validDateTime) {
+            try {
+                System.out.print("\t\t\t\tDeparture Date (yyyy-mm-dd): ");
+                departureDate = scanner.nextLine();
+                LocalDate.parse(departureDate);
+
+                System.out.print("\t\t\t\tDeparture Time (hh:mm AM/PM): ");
+                departureTime = scanner.nextLine();
+                LocalTime.parse(departureTime, formatter);
+
+                validDateTime = true;
+            } catch (DateTimeParseException e) {
+                setDisplayMessage(red
+                        + "\tInvalid date or time format. Please enter the date in yyyy-mm-dd format and time in hh:mm AM/PM format."
+                        + reset);
+                showDisplayMessage();
+            }
+        }
+
         System.out.print("\t\t\t\tFare: ");
         fare = scanner.nextInt();
+        scanner.nextLine();
 
         database.databaseQuery(
                 "INSERT INTO planes (name, origin, destination, capacity, departure_date, departure_time, fare) VALUES (?, ?, ?, ?, ?, ?, ?);",
                 name, origin, destination, capacity, departureDate, departureTime, fare);
-        setDisplayMessage(green + "\t\t\t\tFlight added successfully !" + reset);
+        setDisplayMessage(green + "\tFlight added successfully !" + reset);
     }
 
 }
