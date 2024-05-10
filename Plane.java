@@ -1,10 +1,6 @@
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.DateTimeParseException;
-import java.util.Locale;
+import java.time.*;
+import java.time.format.*;
 import java.util.Scanner;
 
 public class Plane extends Start {
