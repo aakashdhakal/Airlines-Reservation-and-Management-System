@@ -61,17 +61,44 @@ public class Admin extends User {
 
     public void showUsers() throws Exception {
         ResultSet resultSet = database.databaseQuery("select * from users;");
+        String format = "║       %s       │   %-15s        │      %-15s       │        %-15s      │     %-10s ║\n";
         // show user details in table
         System.out.print(
                 """
-                        ╔═══════╤══════════════════╤══════════════════╤════════════════════════════════════════════════════════════════════════╗                                                      
-                        ║   ID  │      Username    │       Name       │     Phone Number ║
-                        ╠═══════╪══════════════════╪══════════════════╪════════════════════════════════════════════════════════════════════════╣
+                        ╔═══════════════╤══════════════════════════╤════════════════════════════╤═════════════════════════════╤════════════════╗
+                        ║       ID      │         Username         │            Name            │        Phone Number         │      Role      ║
+                        ╠═══════════════╪══════════════════════════╪════════════════════════════╪═════════════════════════════╪════════════════╣
                         """);
         while (resultSet.next()) {
-            System.out.println("\t\t\t\t" + resultSet.getInt("id") + "\t\t" + resultSet.getString("username") + "\t\t"
-                    + resultSet.getString("firstname") + "\t\t" + resultSet.getString("lastname") + "\t\t"
-                    + resultSet.getString("role"));
+            System.out.printf(format, resultSet.getString("id"), resultSet.getString("username"),
+                    resultSet.getString("firstname") + " " + resultSet.getString("lastname"),
+                    resultSet.getString("phone_no"), resultSet.getString("role"));
+            System.out.print(
+                    """
+                            ╟───────────────┼──────────────────────────┼────────────────────────────┼─────────────────────────────┼────────────────╢
+                                            """);
+
+        }
+        System.out.print(
+                """
+                        ╙───────────────┴──────────────────────────┴────────────────────────────┴─────────────────────────────┴────────────────╜
+                                        """);
+    }
+
+    private void removeAdmin() throws Exception {
+        clearScreen();
+        showAppTitle();
+        String username;
+        System.out.print("\t\t\t\tEnter the username of the admin to remove: ");
+        username = scanner.nextLine();
+        // Check if the user is an admin
+        if (isAdmin(username)) {
+            // If the user is an admin, remove them
+            database.databaseQuery("update users set role = 'passenger' where username = ?;", username);
+            setDisplayMessage(green + "\t " + username + " is no longer an admin" + reset);
+        } else {
+            // If the user is not an admin
+            setDisplayMessage(red + "\t " + username + " is not an admin" + reset);
         }
     }
 
@@ -88,15 +115,18 @@ public class Admin extends User {
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
                     \t\t\t\t║  3. Add an administrator                             ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  4. Show user details                                ║
+                    \t\t\t\t║  4. Remove an administrator                          ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  5. Change to Passenger Mode                         ║
+                    \t\t\t\t║  5. Show user details                                ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  6. Logout                                           ║
+                    \t\t\t\t║  6. Change to Passenger Mode                         ║
+                    \t\t\t\t╟──────────────────────────────────────────────────────╢
+                    \t\t\t\t║  7. Logout                                           ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝
                             """);
             System.out.print("\t\t\t\tEnter your choice: ");
             choice = scanner.nextInt();
+            scanner.nextLine();
             switch (choice) {
                 case 1:
                     showAppTitle();
@@ -113,24 +143,30 @@ public class Admin extends User {
                     showAppTitle();
                     addAdmin();
                     break;
+
                 case 4:
+                    showAppTitle();
+                    removeAdmin();
+                    break;
+
+                case 5:
                     showAppTitle();
                     showUsers();
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
                     scanner.nextLine();
                     break;
-                case 5:
+                case 6:
                     showAppTitle();
                     passenger.passengerMenu();
                     break;
-                case 6:
+                case 7:
                     setDisplayMessage(green + "\tLogged out successfully" + reset);
                     return;
                 default:
                     setDisplayMessage(red + "\tInvalid choice. Please try again" + reset);
             }
-        } while (choice != 4);
+        } while (choice != 7);
 
     }
 

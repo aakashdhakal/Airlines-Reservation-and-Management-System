@@ -100,47 +100,22 @@ public class Plane extends Start {
         int capacity = scanner.nextInt();
         scanner.nextLine();
         boolean validDateTime = false;
-
         do {
             System.out.print("\t\t\t\tDeparture Date (yyyy-mm-dd): ");
             departureDate = scanner.nextLine();
             try {
-                LocalDate.parse(departureDate);
-                if (departureDate.compareTo(LocalDate.now().toString()) > 0) {
-                    validDateTime = true;
-                } else {
-                    setDisplayMessage(red
-                            + "\tInvalid date. Please enter a date in the future."
-                            + reset);
-                    showDisplayMessage();
+                if (LocalDate.parse(departureDate).isBefore(LocalDate.now())) {
+                    System.out.println(red + "\t\t\t\tInvalid date. Please enter a future date." + reset);
+                    continue;
                 }
                 validDateTime = true;
-            } catch (DateTimeParseException e) {
-                setDisplayMessage(red
-                        + "\tInvalid date format. Please enter the date in yyyy-mm-dd format."
-                        + reset);
-                showDisplayMessage();
-            }
-        } while (!validDateTime);
-
-        while (!validDateTime) {
-            try {
-                System.out.print("\t\t\t\tDeparture Date (yyyy-mm-dd): ");
-                departureDate = scanner.nextLine();
-                LocalDate.parse(departureDate);
-
-                System.out.print("\t\t\t\tDeparture Time (hh:mm AM/PM): ");
-                departureTime = scanner.nextLine();
-                LocalTime.parse(departureTime, formatter);
+                ;
 
                 validDateTime = true;
             } catch (DateTimeParseException e) {
-                setDisplayMessage(red
-                        + "\tInvalid date or time format. Please enter the date in yyyy-mm-dd format and time in hh:mm AM/PM format."
-                        + reset);
-                showDisplayMessage();
+                System.out.println(red + "\t\t\t\tInvalid date format. Please enter in yyyy-mm-dd format." + reset);
             }
-        }
+        } while (!validDateTime);
 
         System.out.print("\t\t\t\tFare: ");
         fare = scanner.nextInt();
