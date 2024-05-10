@@ -47,7 +47,7 @@ public class User extends Start {
             userId = user.getInt("id");
             userFirstName = user.getString("firstname");
             userLastName = user.getString("lastname");
-
+            user.close();
             // Return true to indicate successful login
             return true;
         } else {
@@ -98,6 +98,7 @@ public class User extends Start {
             return true;
         }
         return false;
+        
     }
 
     public boolean checkUsername(String username) throws Exception {

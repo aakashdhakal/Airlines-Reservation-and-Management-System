@@ -78,6 +78,7 @@ public class Plane extends Start {
             int availableSeats = capacity - reserved;
             return availableSeats;
         }
+        planes.close();
         return 0;
     }
 
