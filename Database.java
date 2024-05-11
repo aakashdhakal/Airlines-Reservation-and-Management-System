@@ -17,7 +17,13 @@ public class Database {
             statement.setObject(i + 1, params[i]);
         }
         if (query.trim().toLowerCase().startsWith("select")) {
-            return statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
+            ;
+            if (!resultSet.isBeforeFirst()) {
+                return null;
+            } else {
+                return resultSet;
+            }
         } else {
             statement.executeUpdate();
             return null;

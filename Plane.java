@@ -2,22 +2,36 @@ import java.sql.ResultSet;
 import java.time.*;
 import java.time.format.*;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Plane extends Start {
     public int flightId;
     public String origin;
     public String destination;
-    public int capacity;
+    public String capacity;
     public String departureDate;
     public String departureTime;
-    public int fare;
+    public String fare;
+    public String available;
+    public String name;
 
     private Database database = new Database();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-    Scanner scanner = new Scanner(System.in);
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+    private Scanner scanner = new Scanner(System.in);
 
     // display plane information in table format
-    public void showPlaneDetails(ResultSet planes) throws Exception {
+    public void showPlaneDetails(Object... params) throws Exception {
+        ResultSet planes;
+        String query = "SELECT * FROM planes";
+        if (params.length > 0) {
+            query += " WHERE id = " + params[0];
+        }
+        planes = database.databaseQuery(query + ";");
+        if (planes == null) {
+            setDisplayMessage(red + "\t!! Plane not found !!" + reset);
+            return;
+        }
         String format = "║ %s │    %10s    │   %-10s │  %-10s  │   %-12s │   %-13s│ %-10s│   %-10s ║\n";
         System.out.print(
                 """
@@ -32,30 +46,34 @@ public class Plane extends Start {
                     planes.getString("departure_date"), formatter.format(departureTime), "Rs "
                             + planes.getString("fare"),
                     availableSeats(planes.getInt("id")));
-            System.out.print(
-                    """
-                            ╟───────┼──────────────────┼──────────────┼──────────────┼────────────────┼────────────────┼───────────┼──────────────╢
-                                                            """);
+
+            if (!planes.isLast()) {
+                System.out.print(
+                        """
+                                ╟───────┼──────────────────┼──────────────┼──────────────┼────────────────┼────────────────┼───────────┼──────────────╢
+                                """);
+            }
         }
+
         System.out.print(
                 """
                         ╙───────┴──────────────────┴──────────────┴──────────────┴────────────────┴────────────────┴───────────┴──────────────╜
-                                                        """);
+                        """);
+
         planes.close();
     }
 
     // check if the flight exists for the given origin and destination
-    public ResultSet checkFlights(String origin, String destination, Object... params) throws Exception {
+    public boolean checkFlights(String origin, String destination, Object... params) throws Exception {
 
-        String query = "SELECT * FROM planes WHERE origin = ? AND destination = ?";
+        String query = "SELECT * FROM planes WHERE origin = ? AND destination = ? AND available = 1;";
         if (params.length > 0) {
             query += " AND id = " + params[0];
         }
-        ResultSet planes = database.databaseQuery(query + ";", origin, destination);
-        if (planes.isBeforeFirst()) {
-            return planes;
+        if (database.databaseQuery(query + ";", origin, destination).isBeforeFirst()) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -76,52 +94,94 @@ public class Plane extends Start {
             int capacity = planes.getInt("capacity");
             int reserved = planes.getInt("reserved");
             int availableSeats = capacity - reserved;
+            planes.close();
             return availableSeats;
         }
         planes.close();
         return 0;
     }
 
+    public Plane enterPlaneDetails() {
+        Plane flight = new Plane();
+        System.out.print("\n\t\t\t\tName: ");
+        flight.name = scanner.nextLine();
+        System.out.print("\t\t\t\tDeparture From: ");
+        flight.origin = scanner.nextLine();
+        System.out.print("\t\t\t\tDestination: ");
+        flight.destination = scanner.nextLine();
+        System.out.print("\t\t\t\tSeat Capacity: ");
+        flight.capacity = scanner.nextLine();
+        System.out.print("\t\t\t\tDeparture Date (yyyy-mm-dd): ");
+        flight.departureDate = scanner.nextLine();
+        System.out.print("\t\t\t\tDeparture Time (hh:mm AM/PM): ");
+        flight.departureTime = scanner.nextLine();
+        System.out.print("\t\t\t\tFare: ");
+        flight.fare = scanner.nextLine();
+        System.out.print("\t\t\t\tIs the plane available for booking? (y/n): ");
+        flight.available = scanner.nextLine();
+        flight.available = flight.available.equals("y") ? "1" : "0";
+
+        return flight;
+    }
+
     public void addPlane() throws Exception {
         System.out.println("\n");
         printCentered("Enter Plane Details");
         printCentered("───────────────────");
-        System.out.println("\n");
-        System.out.print("\t\t\t\tName: ");
-        String name = scanner.nextLine();
-        System.out.print("\t\t\t\tDeparture From: ");
-        String origin = scanner.nextLine();
-        System.out.print("\t\t\t\tDestination: ");
-        String destination = scanner.nextLine();
-        System.out.print("\t\t\t\tSeat Capacity: ");
-        int capacity = scanner.nextInt();
-        scanner.nextLine();
-        boolean validDateTime = false;
-        do {
-            System.out.print("\t\t\t\tDeparture Date (yyyy-mm-dd): ");
-            departureDate = scanner.nextLine();
-            try {
-                if (LocalDate.parse(departureDate).isBefore(LocalDate.now())) {
-                    System.out.println(red + "\t\t\t\tInvalid date. Please enter a future date." + reset);
-                    continue;
-                }
-                validDateTime = true;
-                ;
+        Plane flight = enterPlaneDetails();
+        // generate random id
 
-                validDateTime = true;
-            } catch (DateTimeParseException e) {
-                System.out.println(red + "\t\t\t\tInvalid date format. Please enter in yyyy-mm-dd format." + reset);
-            }
-        } while (!validDateTime);
-
-        System.out.print("\t\t\t\tFare: ");
-        fare = scanner.nextInt();
-        scanner.nextLine();
-
+        flight.flightId = 1000 + (int) (Math.random() * ((99999 - 1000) + 1));
         database.databaseQuery(
-                "INSERT INTO planes (name, origin, destination, capacity, departure_date, departure_time, fare) VALUES (?, ?, ?, ?, ?, ?, ?);",
-                name, origin, destination, capacity, departureDate, departureTime, fare);
+                "INSERT INTO planes (id,name, origin, destination, capacity, departure_date, departure_time, fare, available) VALUES (?,?,?,?,?,?,?,?,?);",
+                flight.flightId,
+                flight.name, flight.origin, flight.destination, Integer.parseInt(flight.capacity), flight.departureDate,
+                flight.departureTime,
+                Integer.parseInt(flight.fare), Boolean.parseBoolean(flight.available));
         setDisplayMessage(green + "\tFlight added successfully !" + reset);
+    }
+
+    public void editPlaneDetails(int id) throws Exception {
+        if (database.databaseQuery("select * from planes where id = ?;", id) == null) {
+            setDisplayMessage(red + "\t!! Plane not found !!" + reset);
+            return;
+        } else {
+
+            showPlaneDetails(id);
+            printCentered("Enter new details (Press Enter to keep the old value)");
+            printCentered("──────────────────────────────────────────────────────────");
+            Plane flight = enterPlaneDetails();
+
+            String query = "UPDATE planes SET ";
+            List<Object> params = new ArrayList<>();
+            String parameters[] = { flight.name, flight.origin, flight.destination, String.valueOf(flight.capacity),
+                    flight.departureDate, flight.departureTime, String.valueOf(flight.fare),
+                    String.valueOf(flight.available) };
+            String columns[] = { "name", "origin", "destination", "capacity", "departure_date", "departure_time",
+                    "fare", "available" };
+            for (int i = 0; i < parameters.length; i++) {
+                if ((i == 3 || i == 6) && !parameters[i].isEmpty()) {
+                    params.add(Integer.parseInt(parameters[i]));
+                    query += columns[i] + " = ?, ";
+                } else if (i == 7 && !parameters[i].isEmpty()) {
+                    params.add(Boolean.parseBoolean(parameters[i]));
+                    query += columns[i] + " = ?, ";
+
+                } else if (!parameters[i].isEmpty()) {
+                    params.add(parameters[i]);
+                    query += columns[i] + " = ?, ";
+                }
+
+                // convert into int and boolean
+
+            }
+            query = query.substring(0, query.length() - 2);
+            query += " WHERE id = ?;";
+            params.add(id);
+            database.databaseQuery(query, params.toArray());
+            setDisplayMessage(green + "\t Flight details updated successfully !" + reset);
+        }
+
     }
 
 }

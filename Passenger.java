@@ -7,7 +7,6 @@ public class Passenger extends User {
     Database database = new Database();
     Start start = new Start();
     Scanner scanner = new Scanner(System.in);
-    private ResultSet planes;
 
     @Override
     public void showAppTitle() {
@@ -30,22 +29,19 @@ public class Passenger extends User {
 
         System.out.print("\t\t\t\tEnter the origin: ");
         flight.origin = scanner.nextLine();
-
-        // Check if there are any flights available for the given origin and destination
-        planes = flight.checkFlights(flight.origin, flight.destination);
-
         // If there are flights available
-        if (planes != null) {
+        if (flight.checkFlights(flight.origin, flight.destination)) {
             clearScreen();
             showAppTitle();
             // Show the details of the available planes
-            flight.showPlaneDetails(planes);
+            flight.showPlaneDetails();
 
             System.out.print("Enter the id of the flight to reserve: ");
             flight.flightId = scanner.nextInt();
+            scanner.nextLine(); // Consume the leftover newline character
 
-            // Check if the selected flight is valid
-            if (flight.checkFlights(flight.origin, flight.destination, flight.flightId) != null) {
+            // If the selected flight is valid
+            if (flight.checkFlights(flight.origin, flight.destination, flight.flightId)) {
                 System.out.print("Enter the number of seats you want to reserve: ");
                 numberOfSeats = scanner.nextInt();
                 scanner.close();
@@ -141,7 +137,7 @@ public class Passenger extends User {
             switch (choice) {
                 case 1:
                     showAppTitle();
-                    flight.showPlaneDetails(database.databaseQuery("select * from planes;"));
+                    flight.showPlaneDetails(database.databaseQuery("select * from planes where available = 1;"));
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
                     scanner.nextLine();

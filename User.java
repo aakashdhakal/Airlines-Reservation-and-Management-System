@@ -90,22 +90,19 @@ public class User extends Start {
     }
 
     public boolean authenticateUser(String username, String password, String role) throws Exception {
-        ResultSet user = database
-                .databaseQuery("SELECT * FROM users WHERE username = ? AND password = ? AND role = ?;", username,
-                        password, role);
-        if (user.next()) {
-            userId = user.getInt("id");
+        if (database.databaseQuery("SELECT * FROM users WHERE username = ? AND password = ? AND role = ?;", username,
+                password, role) != null) {
             return true;
         }
         return false;
-        
+
     }
 
     public boolean checkUsername(String username) throws Exception {
-        ResultSet user = database.databaseQuery("SELECT * FROM users WHERE username = ?;", username);
-        if (user.next()) {
+        if (database.databaseQuery("SELECT * FROM users WHERE username = ?;", username) != null) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }

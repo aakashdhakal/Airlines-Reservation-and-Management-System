@@ -38,7 +38,7 @@ public class Admin extends User {
         System.out.print("\t\t\t\tEnter the username of the new admin: ");
         username = scanner.nextLine();
         // Check if the username already exists
-        if (checkUsername(username)) {
+        if (database.databaseQuery("select * from users where username = ?;", username) != null) {
             // If the user is already an admin
             if (isAdmin(username)) {
                 setDisplayMessage(red + "\t     " + username + " is already an admin" + reset);
@@ -113,15 +113,17 @@ public class Admin extends User {
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
                     \t\t\t\t║  2. Add a plane                                      ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  3. Add an administrator                             ║
+                    \t\t\t\t║  3. Edit plane details                               ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  4. Remove an administrator                          ║
+                    \t\t\t\t║  4. Add an administrator                             ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  5. Show user details                                ║
+                    \t\t\t\t║  5. Remove an administrator                          ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  6. Change to Passenger Mode                         ║
+                    \t\t\t\t║  6. Show user details                                ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  7. Logout                                           ║
+                    \t\t\t\t║  7. Change to Passenger Mode                         ║
+                    \t\t\t\t╟──────────────────────────────────────────────────────╢
+                    \t\t\t\t║  8. Logout                                           ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝
                             """);
             System.out.print("\t\t\t\tEnter your choice: ");
@@ -130,7 +132,7 @@ public class Admin extends User {
             switch (choice) {
                 case 1:
                     showAppTitle();
-                    flight.showPlaneDetails(database.databaseQuery("select * from planes;"));
+                    flight.showPlaneDetails();
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
                     scanner.nextLine();
@@ -139,28 +141,36 @@ public class Admin extends User {
                     showAppTitle();
                     flight.addPlane();
                     break;
-                case 3:
+                case 4:
                     showAppTitle();
                     addAdmin();
                     break;
 
-                case 4:
+                case 3:
+                    showAppTitle();
+                    System.out.print("\t\t\t\tEnter Plane ID to edit: ");
+                    int id = scanner.nextInt();
+                    showAppTitle();
+                    flight.editPlaneDetails(id);
+                    break;
+
+                case 5:
                     showAppTitle();
                     removeAdmin();
                     break;
 
-                case 5:
+                case 6:
                     showAppTitle();
                     showUsers();
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
                     scanner.nextLine();
                     break;
-                case 6:
+                case 7:
                     showAppTitle();
                     passenger.passengerMenu();
                     break;
-                case 7:
+                case 8:
                     setDisplayMessage(green + "\tLogged out successfully" + reset);
                     return;
                 default:
