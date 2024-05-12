@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Start {
+public class AirlinesReservationSystem {
 
     String red = "\033[0;31m";
     String reset = "\u001B[0m";
@@ -79,7 +79,7 @@ public class Start {
     }
 
     public static void main(String[] args) throws Exception {
-        Start start = new Start();
+        AirlinesReservationSystem start = new AirlinesReservationSystem();
         User user = new User();
         Scanner scanner = new Scanner(System.in);
         int choice;

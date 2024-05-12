@@ -5,7 +5,7 @@ public class Passenger extends User {
 
     Plane flight = new Plane();
     Database database = new Database();
-    Start start = new Start();
+    AirlinesReservationSystem start = new AirlinesReservationSystem();
     Scanner scanner = new Scanner(System.in);
 
     @Override

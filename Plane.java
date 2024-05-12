@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Plane extends Start {
+public class Plane extends AirlinesReservationSystem {
     public int flightId;
     public String origin;
     public String destination;

@@ -2,7 +2,7 @@ import java.io.Console;
 import java.sql.*;
 import java.util.Scanner;
 
-public class User extends Start {
+public class User extends AirlinesReservationSystem {
 
     public static String username;
     public static String userFirstName;
@@ -14,7 +14,7 @@ public class User extends Start {
     public static int userId;
 
     private Database database = new Database();
-    private Start start = new Start();
+    private AirlinesReservationSystem start = new AirlinesReservationSystem();
     private Scanner scanner = new Scanner(System.in);
 
     // function to handle user login

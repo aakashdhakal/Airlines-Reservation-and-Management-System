@@ -73,16 +73,20 @@ public class Admin extends User {
             System.out.printf(format, resultSet.getString("id"), resultSet.getString("username"),
                     resultSet.getString("firstname") + " " + resultSet.getString("lastname"),
                     resultSet.getString("phone_no"), resultSet.getString("role"));
-            System.out.print(
-                    """
-                            ╟───────────────┼──────────────────────────┼────────────────────────────┼─────────────────────────────┼────────────────╢
-                                            """);
-
+            if (!resultSet.isLast()) {
+                System.out.print(
+                        """
+                                ╟───────────────┼──────────────────────────┼────────────────────────────┼─────────────────────────────┼────────────────╢
+                                """);
+            }
         }
+
         System.out.print(
                 """
                         ╙───────────────┴──────────────────────────┴────────────────────────────┴─────────────────────────────┴────────────────╜
-                                        """);
+                        """);
+
+        resultSet.close();
     }
 
     private void removeAdmin() throws Exception {
@@ -163,7 +167,6 @@ public class Admin extends User {
                     showAppTitle();
                     showUsers();
                     System.out.print("Press enter to continue...");
-                    scanner.nextLine();
                     scanner.nextLine();
                     break;
                 case 7:
