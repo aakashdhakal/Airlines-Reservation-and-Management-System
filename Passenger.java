@@ -203,9 +203,4 @@ public class Passenger extends User {
         } while (choice != 4);
     }
 
-    public void main(String[] args) throws Exception {
-        showTickets(database.databaseQuery(
-                "select * from reservations inner join planes on reservations.plane_id = planes.id inner join users on reservations.user_id = users.id  where user_id = 4;"));
-    }
-
 }

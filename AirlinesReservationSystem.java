@@ -76,45 +76,45 @@ public class AirlinesReservationSystem {
                         """);
     }
 
-    // public static void main(String[] args) throws Exception {
-    // AirlinesReservationSystem start = new AirlinesReservationSystem();
-    // User user = new User();
-    // Scanner scanner = new Scanner(System.in);
-    // int choice;
+    public static void main(String[] args) throws Exception {
+        AirlinesReservationSystem start = new AirlinesReservationSystem();
+        User user = new User();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
 
-    // do {
-    // // clear the screen
-    // showAppTitle();
-    // start.showStartMenu();
-    // System.out.print("\t\t\t\tEnter your choice: ");
-    // choice = scanner.nextInt();
-    // switch (choice) {
-    // case 1:
-    // if (user.userLogin("admin")) {
-    // Admin admin = new Admin();
-    // admin.adminMenu();
-    // }
-    // break;
-    // case 2:
-    // if (user.userLogin("passenger")) {
-    // Passenger passenger = new Passenger();
-    // passenger.passengerMenu();
-    // }
-    // break;
-    // case 3:
-    // user.registerUser("passenger");
-    // break;
-    // case 4:
-    // System.exit(0);
-    // break;
-    // default:
-    // setDisplayMessage(red + "\t ERROR ! Please enter valid option !" +
-    // reset);
-    // }
+        do {
+            // clear the screen
+            showAppTitle();
+            start.showStartMenu();
+            System.out.print("\t\t\t\tEnter your choice: ");
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    if (user.userLogin("admin")) {
+                        Admin admin = new Admin();
+                        admin.adminMenu();
+                    }
+                    break;
+                case 2:
+                    if (user.userLogin("passenger")) {
+                        Passenger passenger = new Passenger();
+                        passenger.passengerMenu();
+                    }
+                    break;
+                case 3:
+                    user.registerUser("passenger");
+                    break;
+                case 4:
+                    System.exit(0);
+                    break;
+                default:
+                    setDisplayMessage(red + "\t ERROR ! Please enter valid option !" +
+                            reset);
+            }
 
-    // } while (choice != 4);
-    // scanner.close();
+        } while (choice != 4);
+        scanner.close();
 
-    // }
+    }
 
 }
