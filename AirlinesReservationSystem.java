@@ -2,15 +2,17 @@ import java.util.Scanner;
 
 public class AirlinesReservationSystem {
 
-    String red = "\033[0;31m";
-    String reset = "\u001B[0m";
-    String green = "\033[0;32m";
-    String yellow = "\033[0;33m";
-    String blue = "\033[0;34m";
-    String purple = "\033[0;35m";
-    String cyan = "\033[0;36m";
+    public static String red = "\033[0;31m";
+    public static String cyan = "\033[0;36m";
+    public static String reset = "\033[0m";
+    public static String green = "\033[0;32m";
+    public static String yellow = "\033[0;33m";
 
-    public static String displayMessage = "";
+    private static String displayMessage = "";
+
+    public static void setDisplayMessage(String message) {
+        displayMessage = message;
+    }
 
     public static void printCentered(String message) {
         int width = 120;
@@ -27,14 +29,14 @@ public class AirlinesReservationSystem {
         }
     }
 
-    public void vline(int n, char ch) {
+    public static void vline(int n, char ch) {
         for (int i = 0; i < n; i++) {
             System.out.print(ch);
         }
         System.out.println("");
     }
 
-    public void showAppTitle() {
+    public static void showAppTitle() {
         clearScreen();
         System.out.println(cyan + """
 
@@ -48,7 +50,7 @@ public class AirlinesReservationSystem {
         printCentered("╠═════════════ Airlines Reservation System ════════════╣");
     }
 
-    public void showDisplayMessage() {
+    public static void showDisplayMessage() {
         if (displayMessage.equals("")) {
             System.out.println("\n");
             return;
@@ -56,10 +58,6 @@ public class AirlinesReservationSystem {
         System.out.println("\n");
         printCentered(displayMessage);
         displayMessage = "";
-    }
-
-    public static void setDisplayMessage(String message) {
-        displayMessage = message;
     }
 
     public void showStartMenu() {
@@ -78,45 +76,45 @@ public class AirlinesReservationSystem {
                         """);
     }
 
-    public static void main(String[] args) throws Exception {
-        AirlinesReservationSystem start = new AirlinesReservationSystem();
-        User user = new User();
-        Scanner scanner = new Scanner(System.in);
-        int choice;
+    // public static void main(String[] args) throws Exception {
+    // AirlinesReservationSystem start = new AirlinesReservationSystem();
+    // User user = new User();
+    // Scanner scanner = new Scanner(System.in);
+    // int choice;
 
-        do {
-            // clear the screen
-            start.showAppTitle();
-            start.showStartMenu();
-            System.out.print("\t\t\t\tEnter your choice: ");
-            choice = scanner.nextInt();
-            switch (choice) {
-                case 1:
-                    if (user.userLogin("admin")) {
-                        Admin admin = new Admin();
-                        admin.adminMenu();
-                    }
-                    break;
-                case 2:
-                    if (user.userLogin("passenger")) {
-                        Passenger passenger = new Passenger();
-                        passenger.passengerMenu();
-                    }
-                    break;
-                case 3:
-                    user.registerUser("passenger");
-                    break;
-                case 4:
-                    System.exit(0);
-                    break;
-                default:
-                    setDisplayMessage(start.red + "\t ERROR ! Please enter valid option !" +
-                            start.reset);
-            }
+    // do {
+    // // clear the screen
+    // showAppTitle();
+    // start.showStartMenu();
+    // System.out.print("\t\t\t\tEnter your choice: ");
+    // choice = scanner.nextInt();
+    // switch (choice) {
+    // case 1:
+    // if (user.userLogin("admin")) {
+    // Admin admin = new Admin();
+    // admin.adminMenu();
+    // }
+    // break;
+    // case 2:
+    // if (user.userLogin("passenger")) {
+    // Passenger passenger = new Passenger();
+    // passenger.passengerMenu();
+    // }
+    // break;
+    // case 3:
+    // user.registerUser("passenger");
+    // break;
+    // case 4:
+    // System.exit(0);
+    // break;
+    // default:
+    // setDisplayMessage(red + "\t ERROR ! Please enter valid option !" +
+    // reset);
+    // }
 
-        } while (choice != 4);
-        scanner.close();
+    // } while (choice != 4);
+    // scanner.close();
 
-    }
+    // }
 
 }

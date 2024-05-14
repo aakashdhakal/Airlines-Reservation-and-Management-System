@@ -14,7 +14,6 @@ public class User extends AirlinesReservationSystem {
     public static int userId;
 
     private Database database = new Database();
-    private AirlinesReservationSystem start = new AirlinesReservationSystem();
     private Scanner scanner = new Scanner(System.in);
 
     // function to handle user login
@@ -22,7 +21,7 @@ public class User extends AirlinesReservationSystem {
         Console console = System.console();
         // Loop until a valid username is entered
         do {
-            start.showAppTitle();
+            showAppTitle();
             showDisplayMessage();
             System.out.print("\n\t\t\t\tEnter your username: ");
             username = scanner.nextLine();
@@ -61,7 +60,7 @@ public class User extends AirlinesReservationSystem {
     public void registerUser(String role) throws Exception {
         // Loop until a unique username is entered
         do {
-            start.showAppTitle();
+            showAppTitle();
             showDisplayMessage();
             System.out.print("\n\t\t\t\tEnter a username: ");
             username = scanner.nextLine();

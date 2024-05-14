@@ -21,11 +21,14 @@ public class Plane extends AirlinesReservationSystem {
     private Scanner scanner = new Scanner(System.in);
 
     // display plane information in table format
-    public void showPlaneDetails(Object... params) throws Exception {
+    public void showPlaneDetails(String condition, Object... params) throws Exception {
         ResultSet planes;
         String query = "SELECT * FROM planes";
         if (params.length > 0) {
             query += " WHERE id = " + params[0];
+        }
+        if (condition == "available") {
+            query += " WHERE available = 1";
         }
         planes = database.databaseQuery(query + ";");
         if (planes == null) {
@@ -147,7 +150,7 @@ public class Plane extends AirlinesReservationSystem {
             return;
         } else {
 
-            showPlaneDetails(id);
+            showPlaneDetails("all", id);
             printCentered("Enter new details (Press Enter to keep the old value)");
             printCentered("──────────────────────────────────────────────────────────");
             Plane flight = enterPlaneDetails();

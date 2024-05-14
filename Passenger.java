@@ -1,4 +1,8 @@
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Passenger extends User {
@@ -7,9 +11,10 @@ public class Passenger extends User {
     Database database = new Database();
     AirlinesReservationSystem start = new AirlinesReservationSystem();
     Scanner scanner = new Scanner(System.in);
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.ENGLISH);
 
-    @Override
-    public void showAppTitle() {
+    public static void showAppTitle() {
         clearScreen();
         printCentered("\n");
         printCentered("╔══════════════════════════════════════════════════════╗");
@@ -34,7 +39,7 @@ public class Passenger extends User {
             clearScreen();
             showAppTitle();
             // Show the details of the available planes
-            flight.showPlaneDetails();
+            flight.showPlaneDetails("available");
 
             System.out.print("Enter the id of the flight to reserve: ");
             flight.flightId = scanner.nextInt();
@@ -75,18 +80,46 @@ public class Passenger extends User {
             return;
         }
         while (reservation.next()) {
-            System.out.printf("%-20s %s\n", "Ticket Id:", reservation.getString("ticket_id"));
-            vline(120, '-');
-            System.out.printf("%-20s %s\n", "Plane Id:", reservation.getString("plane_id"));
-            System.out.printf("%-20s %s\n", "Number of Seats:", reservation.getString("number_of_seats"));
-            System.out.printf("%-20s %s\n", "From:", reservation.getString("origin"));
-            System.out.printf("%-20s %s\n", "To:", reservation.getString("destination"));
-            System.out.printf("%-20s %s\n", "Departure Date:", reservation.getString("departure_date"));
-            System.out.printf("%-20s %s\n", "Departure Time:", reservation.getString("departure_time"));
-            System.out.printf("%-20s Rs %d\n", "Total Cost:",
-                    reservation.getInt("fare") * reservation.getInt("number_of_seats"));
-            vline(120, '-');
+            LocalTime departureTime = LocalTime.parse(reservation.getString("departure_time"));
+            LocalDate departureDate = LocalDate.parse(reservation.getString("departure_date"));
+            System.out.println(
+                    "╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+            System.out.printf("║ %65s   %50s\n", reservation.getString("name"), "║");
+            System.out.printf("%s %119s", "║", "║\n");
+            System.out.printf("║ %s %109s ║\n",
+                    "Ticket ID: " + yellow + reservation.getString("ticket_id") + reset,
+                    "Flight ID: " + yellow + reservation.getString("id") + reset);
+            System.out.printf("%s %119s", "║", "║\n");
+
+            System.out.printf("║ %s %50s %55s   ║\n",
+                    "Passenger Name: " + yellow + reservation.getString("firstname") + " "
+                            + reservation.getString("lastname") + reset,
+                    "Date: " + yellow + dateFormatter.format(departureDate) + reset,
+                    "Time: " + yellow + timeFormatter.format(departureTime) + reset);
+            System.out.printf("%s %119s", "║", "║\n");
+
+            System.out.printf("║ %-33s %-30s %75s\n",
+                    "From: " + yellow + reservation.getString("origin") + reset,
+                    "To: " + yellow + reservation.getString("destination") + reset,
+                    "║");
+            System.out.printf("%s %119s", "║", "║\n");
+
+            System.out.printf("║ %s  %43s  %74s\n",
+                    "Seats: " + yellow + reservation.getString("number_of_seats") + reset,
+                    "Total Fare: " + yellow + "Rs " + reservation.getInt("fare") * reservation.getInt("number_of_seats")
+                            + reset,
+                    "║");
+            System.out.printf("%s %119s", "║", "║\n");
+
+            System.out.println(
+                    """
+                            ║                       **** Please arrive at the airport 2 hours before departure time *****                          ║
+                            ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+                                            """);
         }
+
+        reservation.close();
     }
 
     // function to cancel a reservation
@@ -112,6 +145,7 @@ public class Passenger extends User {
             database.databaseQuery("delete from reservations where ticket_id = ?;", ticketId);
             setDisplayMessage(green + "\tReservation cancelled successfully" + reset);
         }
+        reservation.close();
     }
 
     public void passengerMenu() throws Exception {
@@ -137,7 +171,7 @@ public class Passenger extends User {
             switch (choice) {
                 case 1:
                     showAppTitle();
-                    flight.showPlaneDetails(database.databaseQuery("select * from planes where available = 1;"));
+                    flight.showPlaneDetails("available");
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
                     scanner.nextLine();
@@ -164,10 +198,14 @@ public class Passenger extends User {
                     return;
                 default:
                     setDisplayMessage(red + "\t    ERROR ! Please enter valid option !" + reset);
-
             }
 
         } while (choice != 4);
+    }
+
+    public void main(String[] args) throws Exception {
+        showTickets(database.databaseQuery(
+                "select * from reservations inner join planes on reservations.plane_id = planes.id inner join users on reservations.user_id = users.id  where user_id = 4;"));
     }
 
 }

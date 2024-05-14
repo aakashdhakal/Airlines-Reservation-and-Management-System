@@ -6,6 +6,13 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "AirlinesReservationSystem",
+			"request": "launch",
+			"mainClass": "AirlinesReservationSystem",
+			"projectName": "Airplane-Reservation-System_8bd041db"
+		},
+		{
+			"type": "java",
 			"name": "Plane",
 			"request": "launch",
 			"mainClass": "Plane",

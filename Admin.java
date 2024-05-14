@@ -8,8 +8,7 @@ public class Admin extends User {
     Passenger passenger = new Passenger();
     Scanner scanner = new Scanner(System.in);
 
-    @Override
-    public void showAppTitle() {
+    public static void showAppTitle() {
         clearScreen();
         printCentered("\n");
         printCentered("╔══════════════════════════════════════════════════════╗");
@@ -38,7 +37,7 @@ public class Admin extends User {
         System.out.print("\t\t\t\tEnter the username of the new admin: ");
         username = scanner.nextLine();
         // Check if the username already exists
-        if (database.databaseQuery("select * from users where username = ?;", username) != null) {
+        if (checkUsername(username)) {
             // If the user is already an admin
             if (isAdmin(username)) {
                 setDisplayMessage(red + "\t     " + username + " is already an admin" + reset);
@@ -136,9 +135,8 @@ public class Admin extends User {
             switch (choice) {
                 case 1:
                     showAppTitle();
-                    flight.showPlaneDetails();
+                    flight.showPlaneDetails("all");
                     System.out.print("Press enter to continue...");
-                    scanner.nextLine();
                     scanner.nextLine();
                     break;
                 case 2:
