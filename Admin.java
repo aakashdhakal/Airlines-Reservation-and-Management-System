@@ -3,10 +3,10 @@ import java.util.Scanner;
 
 public class Admin extends User {
 
-    Database database = new Database();
-    Plane flight = new Plane();
-    Passenger passenger = new Passenger();
-    Scanner scanner = new Scanner(System.in);
+    private static Database database = new Database();
+    private static Plane flight = new Plane();
+    private static Passenger passenger = new Passenger();
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void showAppTitle() {
         clearScreen();
@@ -19,7 +19,7 @@ public class Admin extends User {
         showDisplayMessage();
     }
 
-    private boolean isAdmin(String username) throws Exception {
+    private static boolean isAdmin(String username) throws Exception {
         ResultSet resultSet = database.databaseQuery("select role from users where username = ?;", username);
         if (resultSet.next()) {
             if (resultSet.getString("role").equals("admin")) {
@@ -58,7 +58,7 @@ public class Admin extends User {
         }
     }
 
-    public void showUsers() throws Exception {
+    private static void showUsers() throws Exception {
         ResultSet resultSet = database.databaseQuery("select * from users;");
         String format = "║       %s       │   %-15s        │      %-15s       │        %-15s      │     %-10s ║\n";
         // show user details in table
@@ -88,7 +88,7 @@ public class Admin extends User {
         resultSet.close();
     }
 
-    private void removeAdmin() throws Exception {
+    private static void removeAdmin() throws Exception {
         clearScreen();
         showAppTitle();
         String username;

@@ -10,68 +10,6 @@
 			"request": "launch",
 			"mainClass": "AirlinesReservationSystem",
 			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "Plane",
-			"request": "launch",
-			"mainClass": "Plane",
-			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "Admin",
-			"request": "launch",
-			"mainClass": "Admin",
-			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "Start",
-			"request": "launch",
-			"mainClass": "Start",
-			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "Passenger",
-			"request": "launch",
-			"mainClass": "Passenger",
-			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "User",
-			"request": "launch",
-			"mainClass": "User",
-			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "test",
-			"request": "launch",
-			"mainClass": "test",
-			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "Database",
-			"request": "launch",
-			"mainClass": "Database",
-			"projectName": "Airplane-Reservation-System_8bd041db"
-		},
-		{
-			"type": "java",
-			"name": "Run/Debug JAVA",
-			"request": "launch",
-			"mainClass": "${file}"
-		},
-		{
-			"type": "java",
-			"name": "Main",
-			"request": "launch",
-			"mainClass": "Main",
-			"projectName": "JAVA_PROJECT_a6b663cc"
 		}
 	]
 }

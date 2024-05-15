@@ -1,9 +1,7 @@
-import java.sql.ResultSet;
+import java.sql.*;
 import java.time.*;
 import java.time.format.*;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Plane extends AirlinesReservationSystem {
     public int flightId;
@@ -57,7 +55,6 @@ public class Plane extends AirlinesReservationSystem {
                                 """);
             }
         }
-
         System.out.print(
                 """
                         ╙───────┴──────────────────┴──────────────┴──────────────┴────────────────┴────────────────┴───────────┴──────────────╜

@@ -10,7 +10,6 @@ public class Database {
     private static String PASSWORD = "";
 
     public ResultSet databaseQuery(String query, Object... params) throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
         Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         PreparedStatement statement = connection.prepareStatement(query);
         for (int i = 0; i < params.length; i++) {
@@ -18,12 +17,12 @@ public class Database {
         }
         if (query.trim().toLowerCase().startsWith("select")) {
             ResultSet resultSet = statement.executeQuery();
-            ;
+            connection.close();
+            statement.close();
             if (!resultSet.isBeforeFirst()) {
                 return null;
-            } else {
-                return resultSet;
             }
+            return resultSet;
         } else {
             statement.executeUpdate();
             return null;
