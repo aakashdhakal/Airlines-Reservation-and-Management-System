@@ -21,14 +21,14 @@ public class Plane extends AirlinesReservationSystem {
     public void showPlaneDetails(String condition, Object... params) throws Exception {
         ResultSet planes;
         StringBuilder query = new StringBuilder("SELECT * FROM planes");
-        params[0] = "";
+
+        if (condition.equals("available")) {
+            query.append(" WHERE available = 1 ");
+        }
         if (params.length > 0) {
-            query.append("WHERE id = ?");
+            query.append(" AND id = " + params[0] + " ");
         }
-        if (condition == "available") {
-            query.append("AND available = 1");
-        }
-        planes = Database.databaseQuery(query + ";", params[0].toString());
+        planes = Database.databaseQuery(query + ";");
         if (planes == null) {
             setDisplayMessage(red + "\t!! Plane not found !!" + reset);
             return;
@@ -61,6 +61,8 @@ public class Plane extends AirlinesReservationSystem {
                         """);
 
         planes.close();
+        System.out.print("Press Enter to continue...");
+        scanner.nextLine();
     }
 
     // check if the flight exists for the given origin and destination

@@ -7,12 +7,11 @@ import java.util.Scanner;
 
 public class Passenger extends User {
 
-    Plane flight = new Plane();
-    Database database = new Database();
-    AirlinesReservationSystem start = new AirlinesReservationSystem();
-    Scanner scanner = new Scanner(System.in);
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(Locale.ENGLISH);
+    private static Plane flight = new Plane();
+    private static Scanner scanner = new Scanner(System.in);
+    private static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
+            .withLocale(Locale.ENGLISH);
 
     public static void showAppTitle() {
         clearScreen();
@@ -74,7 +73,12 @@ public class Passenger extends User {
         }
     }
 
-    public void showTickets(ResultSet reservation) throws Exception {
+    public void showTickets(int userId) throws Exception {
+
+        ResultSet reservation = Database.databaseQuery(
+                "select * from reservations inner join planes on reservations.plane_id = planes.id inner join users on reservations.user_id = users.id where user_id = ?;",
+                userId);
+
         if (!reservation.isBeforeFirst()) {
             setDisplayMessage(red + "\t!! No reservations found  !!" + reset);
             return;
@@ -132,7 +136,7 @@ public class Passenger extends User {
             setDisplayMessage(red + "\t!! No reservations found !!" + reset);
         } else {
             // Display the user's reservations
-            showTickets(reservation);
+            showTickets(userId);
             System.out.print("Enter the ticket id of the reservation you want to cancel: ");
             int ticketId = scanner.nextInt();
             scanner.nextLine(); // Consume the leftover newline character
@@ -171,20 +175,16 @@ public class Passenger extends User {
                 case 1:
                     showAppTitle();
                     flight.showPlaneDetails("available");
-                    System.out.print("Press enter to continue...");
-                    scanner.nextLine();
                     break;
                 case 2:
                     showAppTitle();
-                    scanner.nextLine();
                     reserveSeat();
                     break;
                 case 3:
                     showAppTitle();
-                    showTickets(Database.databaseQuery(
-                            "select * from reservations inner join planes on reservations.plane_id = planes.id where user_id = ?;",
-                            userId));
+                    showTickets(userId);
                     System.out.print("Press enter to continue...");
+                    scanner.nextLine();
                     scanner.nextLine();
                     break;
                 case 4:
