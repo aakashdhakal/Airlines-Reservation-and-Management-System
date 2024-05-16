@@ -55,7 +55,7 @@ public class AirlinesReservationSystem {
     public static void showAppTitle() {
         clearScreen();
         System.out.println(cyan + """
-                // ASCII Art for the title
+
                 \t\t\t\t███████ ██   ██ ██    ██ ██████   █████  ███████ ███████
                 \t\t\t\t██      ██  ██   ██  ██  ██   ██ ██   ██ ██      ██
                 \t\t\t\t███████ █████     ████   ██████  ███████ ███████ ███████
@@ -70,7 +70,7 @@ public class AirlinesReservationSystem {
     public static void showStartMenu() {
         showDisplayMessage();
         printCentered("""
-                // ASCII Art for the menu
+
                 \t\t\t\t╔══════════════════════════════════════════════════════╗
                 \t\t\t\t║  1. ADMIN login                                      ║
                 \t\t\t\t╟──────────────────────────────────────────────────────╢
@@ -106,7 +106,7 @@ public class AirlinesReservationSystem {
                     }
                     break;
                 case 3:
-                    user.registerUser("passenger");
+                    User.registerUser("passenger");
                     break;
                 case 4:
                     System.exit(0);

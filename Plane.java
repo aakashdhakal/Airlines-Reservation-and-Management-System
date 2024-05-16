@@ -14,21 +14,21 @@ public class Plane extends AirlinesReservationSystem {
     public String available;
     public String name;
 
-    private Database database = new Database();
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-    private Scanner scanner = new Scanner(System.in);
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+    private static Scanner scanner = new Scanner(System.in);
 
     // display plane information in table format
     public void showPlaneDetails(String condition, Object... params) throws Exception {
         ResultSet planes;
-        String query = "SELECT * FROM planes";
+        StringBuilder query = new StringBuilder("SELECT * FROM planes");
+        params[0] = "";
         if (params.length > 0) {
-            query += " WHERE id = " + params[0];
+            query.append("WHERE id = ?");
         }
         if (condition == "available") {
-            query += " WHERE available = 1";
+            query.append("AND available = 1");
         }
-        planes = database.databaseQuery(query + ";");
+        planes = Database.databaseQuery(query + ";", params[0].toString());
         if (planes == null) {
             setDisplayMessage(red + "\t!! Plane not found !!" + reset);
             return;
@@ -70,7 +70,7 @@ public class Plane extends AirlinesReservationSystem {
         if (params.length > 0) {
             query += " AND id = " + params[0];
         }
-        if (database.databaseQuery(query + ";", origin, destination).isBeforeFirst()) {
+        if (Database.databaseQuery(query + ";", origin, destination).isBeforeFirst()) {
             return true;
         } else {
             return false;
@@ -86,10 +86,9 @@ public class Plane extends AirlinesReservationSystem {
     }
 
     public int availableSeats(int flightId) throws Exception {
-        ResultSet planes = database
-                .databaseQuery(
-                        "SELECT planes.capacity, COUNT(reservations.ticket_id) as reserved FROM planes LEFT JOIN reservations ON planes.id = reservations.plane_id WHERE planes.id = ? GROUP BY planes.id;",
-                        flightId);
+        ResultSet planes = Database.databaseQuery(
+                "SELECT planes.capacity, COUNT(reservations.ticket_id) as reserved FROM planes LEFT JOIN reservations ON planes.id = reservations.plane_id WHERE planes.id = ? GROUP BY planes.id;",
+                flightId);
         if (planes.next()) {
             int capacity = planes.getInt("capacity");
             int reserved = planes.getInt("reserved");
@@ -120,7 +119,6 @@ public class Plane extends AirlinesReservationSystem {
         System.out.print("\t\t\t\tIs the plane available for booking? (y/n): ");
         flight.available = scanner.nextLine();
         flight.available = flight.available.equals("y") ? "1" : "0";
-
         return flight;
     }
 
@@ -132,7 +130,7 @@ public class Plane extends AirlinesReservationSystem {
         // generate random id
 
         flight.flightId = 1000 + (int) (Math.random() * ((99999 - 1000) + 1));
-        database.databaseQuery(
+        Database.databaseQuery(
                 "INSERT INTO planes (id,name, origin, destination, capacity, departure_date, departure_time, fare, available) VALUES (?,?,?,?,?,?,?,?,?);",
                 flight.flightId,
                 flight.name, flight.origin, flight.destination, Integer.parseInt(flight.capacity), flight.departureDate,
@@ -142,7 +140,7 @@ public class Plane extends AirlinesReservationSystem {
     }
 
     public void editPlaneDetails(int id) throws Exception {
-        if (database.databaseQuery("select * from planes where id = ?;", id) == null) {
+        if (Database.databaseQuery("select * from planes where id = ?;", id) == null) {
             setDisplayMessage(red + "\t!! Plane not found !!" + reset);
             return;
         } else {
@@ -171,14 +169,11 @@ public class Plane extends AirlinesReservationSystem {
                     params.add(parameters[i]);
                     query += columns[i] + " = ?, ";
                 }
-
-                // convert into int and boolean
-
             }
             query = query.substring(0, query.length() - 2);
             query += " WHERE id = ?;";
             params.add(id);
-            database.databaseQuery(query, params.toArray());
+            Database.databaseQuery(query, params.toArray());
             setDisplayMessage(green + "\t Flight details updated successfully !" + reset);
         }
 

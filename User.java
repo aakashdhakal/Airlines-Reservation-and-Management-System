@@ -8,13 +8,12 @@ public class User extends AirlinesReservationSystem {
     public static String userFirstName;
     public static String userLastName;
     public static String userContactNumber;
-    public String password;
+    public static String password;
     public String role;
     public int numberOfSeats;
     public static int userId;
 
-    private Database database = new Database();
-    private Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
     // function to handle user login
     public boolean userLogin(String role) throws Exception {
@@ -39,9 +38,8 @@ public class User extends AirlinesReservationSystem {
         // If the user is authenticated successfully
         if (authenticateUser(username, password, role)) {
             // Query the database for the user's details
-            ResultSet user = database.databaseQuery("select * from users where username = ?;", username);
+            ResultSet user = Database.databaseQuery("select * from users where username = ?;", username);
             user.next();
-
             // Store the user's details in local variables
             userId = user.getInt("id");
             userFirstName = user.getString("firstname");
@@ -57,7 +55,7 @@ public class User extends AirlinesReservationSystem {
     }
 
     // function to register a new user
-    public void registerUser(String role) throws Exception {
+    public static void registerUser(String role) throws Exception {
         // Loop until a unique username is entered
         do {
             showAppTitle();
@@ -80,7 +78,7 @@ public class User extends AirlinesReservationSystem {
         userContactNumber = scanner.nextLine();
 
         // Insert the new user's details into the database
-        database.databaseQuery(
+        Database.databaseQuery(
                 "insert into users (username, password, firstname, lastname, role,phone_no) values (?,?,?,?,?,?);",
                 username, password, userFirstName, userLastName, role, userContactNumber);
 
@@ -89,7 +87,7 @@ public class User extends AirlinesReservationSystem {
     }
 
     public boolean authenticateUser(String username, String password, String role) throws Exception {
-        if (database.databaseQuery("SELECT * FROM users WHERE username = ? AND password = ? AND role = ?;", username,
+        if (Database.databaseQuery("SELECT * FROM users WHERE username = ? AND password = ? AND role = ?;", username,
                 password, role) != null) {
             return true;
         }
@@ -97,8 +95,8 @@ public class User extends AirlinesReservationSystem {
 
     }
 
-    public boolean checkUsername(String username) throws Exception {
-        if (database.databaseQuery("SELECT * FROM users WHERE username = ?;", username) != null) {
+    public static boolean checkUsername(String username) throws Exception {
+        if (Database.databaseQuery("SELECT * FROM users WHERE username = ?;", username) != null) {
             return true;
         } else {
             return false;

@@ -3,9 +3,8 @@ import java.util.Scanner;
 
 public class Admin extends User {
 
-    private static Database database = new Database();
     private static Plane flight = new Plane();
-    private static Passenger passenger = new Passenger();
+    // private static Passenger passenger = new Passenger();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void showAppTitle() {
@@ -20,7 +19,7 @@ public class Admin extends User {
     }
 
     private static boolean isAdmin(String username) throws Exception {
-        ResultSet resultSet = database.databaseQuery("select role from users where username = ?;", username);
+        ResultSet resultSet = Database.databaseQuery("select role from users where username = ?;", username);
         if (resultSet.next()) {
             if (resultSet.getString("role").equals("admin")) {
                 return true;
@@ -30,7 +29,7 @@ public class Admin extends User {
     }
 
     // function to add a new admin user
-    private void addAdmin() throws Exception {
+    private static void addAdmin() throws Exception {
         clearScreen();
         showAppTitle();
         String username;
@@ -48,7 +47,7 @@ public class Admin extends User {
                 String choice = scanner.nextLine();
                 if (choice.equals("y")) {
                     // Update the user's role in the database to 'admin'
-                    database.databaseQuery("update users set role = 'admin' where username = ?';", username);
+                    Database.databaseQuery("update users set role = 'admin' where username = ?';", username);
                     setDisplayMessage(green + "\t" + username + " is now an admin" + reset);
                 }
             }
@@ -59,7 +58,7 @@ public class Admin extends User {
     }
 
     private static void showUsers() throws Exception {
-        ResultSet resultSet = database.databaseQuery("select * from users;");
+        ResultSet resultSet = Database.databaseQuery("select * from users;");
         String format = "║       %s       │   %-15s        │      %-15s       │        %-15s      │     %-10s ║\n";
         // show user details in table
         System.out.print(
@@ -97,7 +96,7 @@ public class Admin extends User {
         // Check if the user is an admin
         if (isAdmin(username)) {
             // If the user is an admin, remove them
-            database.databaseQuery("update users set role = 'passenger' where username = ?;", username);
+            Database.databaseQuery("update users set role = 'passenger' where username = ?;", username);
             setDisplayMessage(green + "\t " + username + " is no longer an admin" + reset);
         } else {
             // If the user is not an admin
@@ -124,9 +123,7 @@ public class Admin extends User {
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
                     \t\t\t\t║  6. Show user details                                ║
                     \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  7. Change to Passenger Mode                         ║
-                    \t\t\t\t╟──────────────────────────────────────────────────────╢
-                    \t\t\t\t║  8. Logout                                           ║
+                    \t\t\t\t║  7. Logout                                           ║
                     \t\t\t\t╚══════════════════════════════════════════════════════╝
                             """);
             System.out.print("\t\t\t\tEnter your choice: ");
@@ -168,10 +165,6 @@ public class Admin extends User {
                     scanner.nextLine();
                     break;
                 case 7:
-                    showAppTitle();
-                    passenger.passengerMenu();
-                    break;
-                case 8:
                     setDisplayMessage(green + "\tLogged out successfully" + reset);
                     return;
                 default:

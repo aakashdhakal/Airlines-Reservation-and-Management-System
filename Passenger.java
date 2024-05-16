@@ -57,7 +57,7 @@ public class Passenger extends User {
                     int reservationId = (int) (Math.random() * (999999 - 100000) + 100000);
 
                     // Insert the reservation into the database
-                    database.databaseQuery(
+                    Database.databaseQuery(
                             "insert into reservations (ticket_id ,user_id, plane_id, number_of_seats) values (?,?,?,?);",
                             reservationId, userId, flight.flightId, numberOfSeats);
 
@@ -118,32 +118,31 @@ public class Passenger extends User {
 
                                             """);
         }
-
         reservation.close();
     }
 
     // function to cancel a reservation
     public void cancelReservation() throws Exception {
         // Query the database for reservations associated with the current user
-        ResultSet reservation = database.databaseQuery(
+        ResultSet reservation = Database.databaseQuery(
                 "select * from reservations inner join planes on reservations.plane_id = planes.id where user_id = ?;",
                 userId);
         // If the user has no reservations
-        if (!reservation.isBeforeFirst()) {
+        if (reservation == null) {
             setDisplayMessage(red + "\t!! No reservations found !!" + reset);
-            return;
-        }
-        // Display the user's reservations
-        showTickets(reservation);
-        System.out.print("Enter the ticket id of the reservation you want to cancel: ");
-        int ticketId = scanner.nextInt();
-        scanner.nextLine(); // Consume the leftover newline character
-        System.out.print("Are you sure you want to cancel the reservation? (y/n): ");
-        String choice = scanner.nextLine();
-        if (choice.equals("y")) {
-            // Delete the reservation from the database
-            database.databaseQuery("delete from reservations where ticket_id = ?;", ticketId);
-            setDisplayMessage(green + "\tReservation cancelled successfully" + reset);
+        } else {
+            // Display the user's reservations
+            showTickets(reservation);
+            System.out.print("Enter the ticket id of the reservation you want to cancel: ");
+            int ticketId = scanner.nextInt();
+            scanner.nextLine(); // Consume the leftover newline character
+            System.out.print("Are you sure you want to cancel the reservation? (y/n): ");
+            String choice = scanner.nextLine();
+            if (choice.equals("y")) {
+                // Delete the reservation from the database
+                Database.databaseQuery("delete from reservations where ticket_id = ?;", ticketId);
+                setDisplayMessage(green + "\tReservation cancelled successfully" + reset);
+            }
         }
         reservation.close();
     }
@@ -174,7 +173,6 @@ public class Passenger extends User {
                     flight.showPlaneDetails("available");
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
-                    scanner.nextLine();
                     break;
                 case 2:
                     showAppTitle();
@@ -183,11 +181,10 @@ public class Passenger extends User {
                     break;
                 case 3:
                     showAppTitle();
-                    showTickets(database.databaseQuery(
+                    showTickets(Database.databaseQuery(
                             "select * from reservations inner join planes on reservations.plane_id = planes.id where user_id = ?;",
                             userId));
                     System.out.print("Press enter to continue...");
-                    scanner.nextLine();
                     scanner.nextLine();
                     break;
                 case 4:
