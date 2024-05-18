@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class Admin extends User {
 
     private static Plane flight = new Plane();
-    // private static Passenger passenger = new Passenger();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void showAppTitle() {
@@ -47,7 +46,7 @@ public class Admin extends User {
                 String choice = scanner.nextLine();
                 if (choice.equals("y")) {
                     // Update the user's role in the database to 'admin'
-                    Database.databaseQuery("update users set role = 'admin' where username = ?';", username);
+                    Database.databaseQuery("update users set role = 'admin' where username = ?;", username);
                     setDisplayMessage(green + "\t" + username + " is now an admin" + reset);
                 }
             }
@@ -59,7 +58,7 @@ public class Admin extends User {
 
     private static void showUsers() throws Exception {
         ResultSet resultSet = Database.databaseQuery("select * from users;");
-        String format = "║       %s       │   %-15s        │      %-15s       │        %-15s      │     %-10s ║\n";
+        String format = "║    %s    │   %-15s        │      %-15s       │        %-15s      │     %-10s ║";
         // show user details in table
         System.out.print(
                 """
@@ -72,8 +71,8 @@ public class Admin extends User {
                     resultSet.getString("firstname") + " " + resultSet.getString("lastname"),
                     resultSet.getString("phone_no"), resultSet.getString("role"));
             if (!resultSet.isLast()) {
-                System.out.print(
-                        """
+                System.out
+                        .print("""
                                 ╟───────────────┼──────────────────────────┼────────────────────────────┼─────────────────────────────┼────────────────╢
                                 """);
             }
@@ -165,10 +164,10 @@ public class Admin extends User {
                     scanner.nextLine();
                     break;
                 case 7:
-                    setDisplayMessage(green + "\tLogged out successfully" + reset);
+                    setDisplayMessage(green + "\t  Logged out successfully" + reset);
                     return;
                 default:
-                    setDisplayMessage(red + "\tInvalid choice. Please try again" + reset);
+                    setDisplayMessage(red + "\t  Invalid choice. Please try again" + reset);
             }
         } while (choice != 7);
 

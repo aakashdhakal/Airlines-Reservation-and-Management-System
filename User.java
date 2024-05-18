@@ -57,6 +57,7 @@ public class User extends AirlinesReservationSystem {
     // function to register a new user
     public static void registerUser(String role) throws Exception {
         // Loop until a unique username is entered
+        String username;
         do {
             showAppTitle();
             showDisplayMessage();
@@ -69,18 +70,20 @@ public class User extends AirlinesReservationSystem {
             }
         } while (checkUsername(username));
         System.out.print("\t\t\t\tEnter your password: ");
-        password = scanner.nextLine();
+        String password = scanner.nextLine();
         System.out.print("\t\t\t\tEnter your first name: ");
-        userFirstName = scanner.nextLine();
+        String userFirstName = scanner.nextLine();
         System.out.print("\t\t\t\tEnter your last name: ");
-        userLastName = scanner.nextLine();
+        String userLastName = scanner.nextLine();
         System.out.print("\t\t\t\tEnter your contact number: ");
-        userContactNumber = scanner.nextLine();
+        String userContactNumber = scanner.nextLine();
+        // random 7 digit user id
+        String userId = String.valueOf((int) (Math.random() * 10000000));
 
         // Insert the new user's details into the database
         Database.databaseQuery(
-                "insert into users (username, password, firstname, lastname, role,phone_no) values (?,?,?,?,?,?);",
-                username, password, userFirstName, userLastName, role, userContactNumber);
+                "insert into users ( id ,username, password, firstname, lastname, role,phone_no) values (?,?,?,?,?,?,?);",
+                userId, username, password, userFirstName, userLastName, role, userContactNumber);
 
         // Display a success message
         setDisplayMessage(green + "\tUser registered successfully" + reset);

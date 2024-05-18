@@ -21,7 +21,7 @@ public class Passenger extends User {
         printCentered("╚══════════════════════════════════════════════════════╝");
         // show user name and role
         printCentered(
-                "\tLogged in as: " + yellow + userFirstName + " " + userLastName + " (" + username + ") " + reset);
+                "\t  Logged in as: " + yellow + userFirstName + " " + userLastName + " (" + username + ") " + reset);
         showDisplayMessage();
     }
 
@@ -38,7 +38,7 @@ public class Passenger extends User {
             clearScreen();
             showAppTitle();
             // Show the details of the available planes
-            flight.showPlaneDetails("available");
+            flight.showPlaneDetails("available", flight.origin, flight.destination);
 
             System.out.print("Enter the id of the flight to reserve: ");
             flight.flightId = scanner.nextInt();
@@ -48,8 +48,7 @@ public class Passenger extends User {
             if (flight.checkFlights(flight.origin, flight.destination, flight.flightId)) {
                 System.out.print("Enter the number of seats you want to reserve: ");
                 numberOfSeats = scanner.nextInt();
-                scanner.close();
-
+                scanner.nextLine(); // Consume the leftover newline character
                 // Check if the selected flight has enough seats available
                 if (flight.checkSeatCapacity(flight.flightId, numberOfSeats)) {
                     // Generate a random reservation id
@@ -79,7 +78,7 @@ public class Passenger extends User {
                 "select * from reservations inner join planes on reservations.plane_id = planes.id inner join users on reservations.user_id = users.id where user_id = ?;",
                 userId);
 
-        if (!reservation.isBeforeFirst()) {
+        if (reservation == null) {
             setDisplayMessage(red + "\t!! No reservations found  !!" + reset);
             return;
         }
@@ -171,10 +170,13 @@ public class Passenger extends User {
                             """);
             System.out.print("\t\t\t\tEnter your choice: ");
             choice = scanner.nextInt();
+            scanner.nextLine();
             switch (choice) {
                 case 1:
                     showAppTitle();
                     flight.showPlaneDetails("available");
+                    System.out.print("Press enter to continue...");
+                    scanner.nextLine();
                     break;
                 case 2:
                     showAppTitle();
@@ -185,9 +187,9 @@ public class Passenger extends User {
                     showTickets(userId);
                     System.out.print("Press enter to continue...");
                     scanner.nextLine();
-                    scanner.nextLine();
                     break;
                 case 4:
+                    showAppTitle();
                     cancelReservation();
                     break;
                 case 5:
@@ -197,7 +199,7 @@ public class Passenger extends User {
                     setDisplayMessage(red + "\t    ERROR ! Please enter valid option !" + reset);
             }
 
-        } while (choice != 4);
+        } while (choice != 5);
     }
 
 }

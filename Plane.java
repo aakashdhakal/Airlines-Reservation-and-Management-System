@@ -25,9 +25,16 @@ public class Plane extends AirlinesReservationSystem {
         if (condition.equals("available")) {
             query.append(" WHERE available = 1 ");
         }
-        if (params.length > 0) {
-            query.append(" AND id = " + params[0] + " ");
+        if (params.length > 1) {
+            query.append(" AND origin = '" + params[0] + "' AND destination = '" + params[1] + "' ");
+        } else if (params.length > 0) {
+            if (condition.equals("all")) {
+                query.append(" WHERE id = " + params[0] + " ");
+            } else {
+                query.append(" AND id = " + params[0] + " ");
+            }
         }
+
         planes = Database.databaseQuery(query + ";");
         if (planes == null) {
             setDisplayMessage(red + "\t!! Plane not found !!" + reset);
@@ -61,18 +68,17 @@ public class Plane extends AirlinesReservationSystem {
                         """);
 
         planes.close();
-        System.out.print("Press Enter to continue...");
-        scanner.nextLine();
+
     }
 
     // check if the flight exists for the given origin and destination
     public boolean checkFlights(String origin, String destination, Object... params) throws Exception {
 
-        String query = "SELECT * FROM planes WHERE origin = ? AND destination = ? AND available = 1;";
+        String query = "SELECT * FROM planes WHERE origin = ? AND destination = ? AND available = 1";
         if (params.length > 0) {
             query += " AND id = " + params[0];
         }
-        if (Database.databaseQuery(query + ";", origin, destination).isBeforeFirst()) {
+        if (Database.databaseQuery(query + ";", origin, destination) != null) {
             return true;
         } else {
             return false;
